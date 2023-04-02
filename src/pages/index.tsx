@@ -10,11 +10,13 @@ import { useState } from 'react'
 import { useFetchMessages } from '@/hooks/useFetchMessages'
 import { DisruptionMessage } from '@/components/DisruptionMessage'
 import { Repeat } from '@/assets/icons/Repeat'
+import { handleFetchTrainAnnouncements } from '@/utils/handleFetchTrainAnnouncements'
+import { handleFetchMessages } from '@/utils/handleFetchMessages'
 
 const stationStockholm = "Cst"
 const stationUppsala = "U"
 
-const Home = () => {
+const Home = ({ initialTrainAnnouncements, initialMessages }: any) => {
   const router = useRouter()
   const { query } = router
 
@@ -39,8 +41,13 @@ const Home = () => {
   const flipStation = {...query, from: trainDirection === "right" ? stationStockholm : stationUppsala, to: trainDirection === "right" ? stationUppsala : stationStockholm }
   const flipStationString = '?' + new URLSearchParams(flipStation).toString()
 
-  const { data, isLoading, error } = useFetchTrainAnnouncements({ from: fromStation, to: toStation, day: selectedDay.format("YYYY-MM-DD") })
-  const { data: messageData } = useFetchMessages({ station: fromStation })
+  const { data, isLoading, error } = useFetchTrainAnnouncements({
+    from: fromStation,
+    to: toStation,
+    day: selectedDay.format("YYYY-MM-DD"),
+    initialData: initialTrainAnnouncements,
+  })
+  const { data: messageData } = useFetchMessages({ station: fromStation, initialData: initialMessages })
 
   const previousTrainAnnouncements = data
     ?.filter(announcement => announcement.TimeAtLocation)
@@ -130,6 +137,32 @@ const Home = () => {
       </main>
     </>
   )
+}
+
+export async function getServerSideProps(context: any) {
+  const { query } = context as any
+
+  const selectedDay = dayjs(Array.isArray(query.selectedDay) ? query.selectedDay[0] : query.selectedDay ?? new Date())
+  const fromStation = Array.isArray(query.from) ? query.from[0] : query.from ?? stationUppsala
+  const toStation = Array.isArray(query.to) ? query.to[0] : query.to ?? stationStockholm
+
+  const [initialTrainAnnouncements, initialMessages] = await Promise.all([
+    handleFetchTrainAnnouncements({
+      day: selectedDay.format("YYYY-MM-DD"),
+      from: fromStation,
+      to: toStation,
+    }),
+    handleFetchMessages({
+      station: fromStation,
+    })
+  ])
+
+  return {
+    props: {
+      initialTrainAnnouncements,
+      initialMessages,
+    },
+  }
 }
 
 export default Home
