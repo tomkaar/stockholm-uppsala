@@ -81,7 +81,9 @@ const Home = () => {
             </Link>
             )}
 
-            <Link href={todayQueryString}>{selectedDay.format("MMM DD")}</Link>
+            <Link href={todayQueryString} className='capitalize'>
+              {selectedDay.format("dddd MMM DD")}
+            </Link>
 
             <Link href={nextDayQueryString}>
               <ChevronRight />
