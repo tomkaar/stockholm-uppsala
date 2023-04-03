@@ -10,13 +10,12 @@ import { useState } from 'react'
 import { useFetchMessages } from '@/hooks/useFetchMessages'
 import { DisruptionMessage } from '@/components/DisruptionMessage'
 import { Repeat } from '@/assets/icons/Repeat'
-import { handleFetchTrainAnnouncements } from '@/utils/handleFetchTrainAnnouncements'
-import { handleFetchMessages } from '@/utils/handleFetchMessages'
+import { Refresh } from '@/assets/icons/Refresh'
 
 const stationStockholm = "Cst"
 const stationUppsala = "U"
 
-const Home = ({ initialTrainAnnouncements, initialMessages }: any) => {
+const Home = () => {
   const router = useRouter()
   const { query } = router
 
@@ -41,13 +40,12 @@ const Home = ({ initialTrainAnnouncements, initialMessages }: any) => {
   const flipStation = {...query, from: trainDirection === "right" ? stationStockholm : stationUppsala, to: trainDirection === "right" ? stationUppsala : stationStockholm }
   const flipStationString = '?' + new URLSearchParams(flipStation).toString()
 
-  const { data, isLoading, error } = useFetchTrainAnnouncements({
+  const { data, isLoading, error, refetch } = useFetchTrainAnnouncements({
     from: fromStation,
     to: toStation,
     day: selectedDay.format("YYYY-MM-DD"),
-    initialData: initialTrainAnnouncements,
   })
-  const { data: messageData } = useFetchMessages({ station: fromStation, initialData: initialMessages })
+  const { data: messageData, refetch: refetchMessages } = useFetchMessages({ station: fromStation })
 
   const previousTrainAnnouncements = data
     ?.filter(announcement => announcement.TimeAtLocation)
@@ -55,6 +53,13 @@ const Home = ({ initialTrainAnnouncements, initialMessages }: any) => {
   const upcomingTrainAnnouncements = data
     ?.filter(announcement => !announcement.TimeAtLocation)
     .sort((a, b) => new Date(a.AdvertisedTimeAtLocation ?? '').getTime() - new Date(b.AdvertisedTimeAtLocation ?? '').getTime())
+
+
+  const handleRefresh = () => {
+    set_displayPreviousTrains(false)
+    refetch()
+    refetchMessages()
+  }
 
   return (
     <>
@@ -134,35 +139,42 @@ const Home = ({ initialTrainAnnouncements, initialMessages }: any) => {
           <Repeat />
         </Link>
 
+        <button 
+          onClick={handleRefresh}
+          className='fixed bottom-4 left-4 bg-emerald-500 dark:bg-emerald-700 p-4 rounded-full text-white'
+        >
+          <Refresh />
+        </button>
+
       </main>
     </>
   )
 }
 
-export async function getServerSideProps(context: any) {
-  const { query } = context as any
+// export async function getServerSideProps(context: any) {
+//   const { query } = context as any
 
-  const selectedDay = dayjs(Array.isArray(query.selectedDay) ? query.selectedDay[0] : query.selectedDay ?? new Date())
-  const fromStation = Array.isArray(query.from) ? query.from[0] : query.from ?? stationUppsala
-  const toStation = Array.isArray(query.to) ? query.to[0] : query.to ?? stationStockholm
+//   const selectedDay = dayjs(Array.isArray(query.selectedDay) ? query.selectedDay[0] : query.selectedDay ?? new Date())
+//   const fromStation = Array.isArray(query.from) ? query.from[0] : query.from ?? stationUppsala
+//   const toStation = Array.isArray(query.to) ? query.to[0] : query.to ?? stationStockholm
 
-  const [initialTrainAnnouncements, initialMessages] = await Promise.all([
-    handleFetchTrainAnnouncements({
-      day: selectedDay.format("YYYY-MM-DD"),
-      from: fromStation,
-      to: toStation,
-    }),
-    handleFetchMessages({
-      station: fromStation,
-    })
-  ])
+//   const [initialTrainAnnouncements, initialMessages] = await Promise.all([
+//     handleFetchTrainAnnouncements({
+//       day: selectedDay.format("YYYY-MM-DD"),
+//       from: fromStation,
+//       to: toStation,
+//     }),
+//     handleFetchMessages({
+//       station: fromStation,
+//     })
+//   ])
 
-  return {
-    props: {
-      initialTrainAnnouncements,
-      initialMessages,
-    },
-  }
-}
+//   return {
+//     props: {
+//       initialTrainAnnouncements,
+//       initialMessages,
+//     },
+//   }
+// }
 
 export default Home

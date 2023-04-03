@@ -8,20 +8,20 @@ export interface IRequiredValues {
 }
 
 export interface IUseFetchTrainAnnouncements extends IRequiredValues {
-  initialData: any
+  initialData?: any
 }
 
 export const useFetchTrainAnnouncements = ({ from, to, day, initialData }: IUseFetchTrainAnnouncements) => {
-  const { data, isLoading, error } = useQuery<TrainAnnouncement[]>({
+  const { data, isLoading, error, refetch } = useQuery<TrainAnnouncement[]>({
     queryKey: [`TrainAnnouncements`, from, to, day],
     queryFn: () => fetchTrainAnnouncements({ from, to, day }),
     onError: console.error,
     // staleTime: 1 minute
     staleTime: 60000,
-    initialData,
+    initialData: initialData ? initialData : undefined,
   })
 
-  return { data, isLoading, error }
+  return { data, isLoading, error, refetch }
 }
 
 export const fetchTrainAnnouncements = async ({ from, to, day }: IRequiredValues) => {
