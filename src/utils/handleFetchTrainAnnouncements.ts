@@ -4,10 +4,8 @@ import { TrainAnnouncementResponse } from '@/types/Response'
 const stationStockholm = "Cst"
 const stationUppsala = "U"
 
-const trainCodeMalartag = "PNA014"
-const trainCodeSJRegional = "PNA025"
-
-const infomationCodeMovingoAvailable = "ONA180"
+const codeMovingoNoValid = "ONA181"
+const codeOnlySJTicket = "ONA179"
 
 export interface IhandleFetchContent {
   from?: string
@@ -91,11 +89,10 @@ export const handleFetchTrainAnnouncements = async ({ from, to, day }: IhandleFe
   // filter valid trains
   const filteredAnnouncements = TrainAnnouncements
     ?.filter(announcement => 
-      // Mälartåg
-      announcement?.ProductInformation?.some(info => [trainCodeMalartag].includes(info.Code ?? "")) ||
-      // SJ Regional with "Movingo Gäller"
-      announcement?.ProductInformation?.some(info => [trainCodeSJRegional].includes(info?.Code ?? "")) && 
-      announcement?.OtherInformation?.some(info => [infomationCodeMovingoAvailable].includes(info?.Code ?? ""))
+      // remove when message "Movingo gäller ej."
+      !announcement?.OtherInformation?.some(info => info.Code === codeMovingoNoValid) &&
+      // remove when message "Endast SJ-biljetter gäller."
+      !announcement?.OtherInformation?.some(info => info.Code === codeOnlySJTicket)
     )
 
   return filteredAnnouncements
