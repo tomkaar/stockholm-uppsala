@@ -1,6 +1,5 @@
+import { stationStockholm } from "@/constants/stations"
 import { TrainMessageResponse } from "@/types/Response"
-
-const stationStockholm = "Cst"
 
 export interface IhandleFetchMessages {
   station?: string

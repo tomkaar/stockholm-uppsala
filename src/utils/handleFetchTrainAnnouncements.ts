@@ -1,11 +1,7 @@
 import dayjs from 'dayjs'
 import { TrainAnnouncementResponse } from '@/types/Response'
-
-const stationStockholm = "Cst"
-const stationUppsala = "U"
-
-const codeMovingoNoValid = "ONA181"
-const codeOnlySJTicket = "ONA179"
+import { stationStockholm, stationUppsala } from '@/constants/stations'
+import { codeMovingoNoValid, codeOnlySJTicket } from '@/constants/codes'
 
 export interface IhandleFetchContent {
   from?: string
