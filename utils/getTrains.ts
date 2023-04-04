@@ -1,35 +1,31 @@
-import dayjs from 'dayjs'
-import { TrainAnnouncementResponse } from '@/types/Response'
-import { stationStockholm, stationUppsala } from '@/constants/stations'
-import { codeMovingoNoValid, codeOnlySJTicket } from '@/constants/codes'
+import "server-only"
 
-export interface IhandleFetchContent {
-  from?: string
-  to?: string
-  day?: string
-}
+import { stationStockholm, stationUppsala } from "@/constants/stations";
+import dayjs from "dayjs";
+import { TrainAnnouncementResponse } from "@/types/Response";
+import { codeMovingoNoValid, codeOnlySJTicket } from "@/constants/codes";
 
-export const handleFetchTrainAnnouncements = async ({ from, to, day }: IhandleFetchContent) => {
-  const stationFrom = from ?? stationStockholm
-  const stationTo = to ?? stationUppsala
-
-  const dateFrom = dayjs(day ?? new Date())
+export const getTrains = async (fromStation: string = stationStockholm, toStation: string = stationUppsala, selectedDay: string) => {
+  const dateFrom = dayjs(selectedDay ?? new Date())
     .hour(0)
     .minute(0)
     .second(0)
     .format("DD MMM YYYY HH:mm:ss")
 
-  const dateTo = dayjs(day ?? new Date())
+  const dateTo = dayjs(selectedDay ?? new Date())
     .set("hour", 23)
     .set("minute", 59)
     .set("second", 59)
     .format("DD MMM YYYY HH:mm:ss")
-  
+
   const response = await fetch("https://api.trafikinfo.trafikverket.se/v2/data.json", {
     method: "POST",
     headers: {
       "Content-Type": "application/xml",
       Accept: "application/json",
+    },
+    next: {
+      revalidate: 10,
     },
     body: `
       <REQUEST>
@@ -37,12 +33,12 @@ export const handleFetchTrainAnnouncements = async ({ from, to, day }: IhandleFe
           <QUERY objecttype='TrainAnnouncement' schemaversion='1.8'>
             <FILTER>
               <AND>
-                <EQ name='LocationSignature' value='${stationFrom}' />
+                <EQ name='LocationSignature' value='${fromStation}' />
                 <EQ name='ActivityType' value='Avgang' />
 
                 <OR>
-                  <EQ name='ToLocation.LocationName' value='${stationTo}' />
-                  <EQ name='ViaToLocation.LocationName' value='${stationTo}' />
+                  <EQ name='ToLocation.LocationName' value='${toStation}' />
+                  <EQ name='ViaToLocation.LocationName' value='${toStation}' />
                 </OR>
 
                 <AND>
@@ -78,7 +74,10 @@ export const handleFetchTrainAnnouncements = async ({ from, to, day }: IhandleFe
       </REQUEST>
     `,
   })
-  const result = await response.json() as TrainAnnouncementResponse
+  .then(res => res.json())
+  .catch((err) => console.error("err --->", err))
+
+  const result = response as TrainAnnouncementResponse
 
   const TrainAnnouncements = result.RESPONSE.RESULT[0].TrainAnnouncement ?? []
 
@@ -92,4 +91,4 @@ export const handleFetchTrainAnnouncements = async ({ from, to, day }: IhandleFe
     )
 
   return filteredAnnouncements
-}
+};
