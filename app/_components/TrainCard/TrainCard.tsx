@@ -2,10 +2,8 @@
 
 import { codeCancelled } from "@/constants/codes";
 import { TrainAnnouncement } from "@/types/TrainAnnouncement";
-import dayjs from "dayjs";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { AdditionalInformation } from "./TrainCard.AdditionalInformation";
-import ErrorBoundary from "./DistruptionMessages/DistruptionMessages.ErrorBoundary";
 import { Time } from "./TrainCard.Time";
 
 export type TTrainCard = {

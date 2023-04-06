@@ -3,7 +3,7 @@ import "server-only"
 import { stationStockholm, stationUppsala } from "@/constants/stations";
 import dayjs from "dayjs";
 import { getTrains } from "../../../../utils/getTrains";
-import { TrainCard } from "../../../_components/TrainCard";
+import { TrainCard } from "../../../_components/TrainCard/TrainCard";
 import { PreviousTrainsAnnouncements } from "../../../_components/PreviousTrainsAnnouncements";
 import { filterTrainAnnouncements } from "../../../_utils/filterTrainAnnouncements";
 import { RefreshTrainsButton } from "../../../_components/RefreshTrainsButton";

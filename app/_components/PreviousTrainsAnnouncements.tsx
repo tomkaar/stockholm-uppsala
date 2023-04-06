@@ -2,7 +2,7 @@
 
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 import { useState } from "react"
-import { TrainCard } from "./TrainCard"
+import { TrainCard } from "./TrainCard/TrainCard"
 
 export interface IPreviousTrainsAnnouncements {
   announcements: TrainAnnouncement[]

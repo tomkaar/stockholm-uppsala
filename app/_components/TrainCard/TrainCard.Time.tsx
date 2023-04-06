@@ -14,6 +14,10 @@ export const Time = ({ announcement, displayLeftStation = true }: TTime) => {
   if (isCanceled) {
     return (
       <span className="text-sm text-slate-500 dark:text-slate-400">
+        <span className="rounded-md px-1 py-0.5 text-white bg-rose-500 dark:bg-rose-500 mr-2 font-bold">
+          Inställt
+        </span>
+
         <time
           className="line-through"
           dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format(
@@ -22,10 +26,6 @@ export const Time = ({ announcement, displayLeftStation = true }: TTime) => {
         >
           {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
         </time>
-
-        <span className="text-rose-500 dark:text-rose-800 ml-2 font-bold">
-          Inställt
-        </span>
       </span>
     );
   }
@@ -36,19 +36,19 @@ export const Time = ({ announcement, displayLeftStation = true }: TTime) => {
         {hasDepartured && displayLeftStation && <span className="mr-1">Lämnat stationen:</span>}
 
         <time
+          className="rounded-md px-1 py-0.5 text-white bg-rose-500 dark:bg-rose-500 mr-2 font-bold"
+          dateTime={dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
+        >
+          {dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
+        </time>
+
+        <time
           className="line-through"
           dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format(
             "HH:mm"
           )}
         >
           {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
-        </time>
-
-        <time
-          className="text-rose-500 dark:text-rose-800 ml-2 font-bold"
-          dateTime={dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
-        >
-          {dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
         </time>
 
         {announcement.EstimatedTimeIsPreliminary && (
