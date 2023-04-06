@@ -2,6 +2,8 @@ import useSWR, { useSWRConfig } from 'swr'
 import { IGroupedByStation } from "../../api/train/route"
 import { Refresh } from "@/assets/icons/Refresh"
 import { Station } from './TrainCard.Station'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 export interface IAdditionalInformation {
   operationalTrainNumber: string,
@@ -12,9 +14,29 @@ export interface IAdditionalInformation {
 const fetcher = (url, options, ...args) => fetch(url, { ...(options ?? {}), next: { revalidate: 30 }}, ...args).then(res => res.json())
 
 export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartureDateTime }: IAdditionalInformation) => {
+  const [_, from, to] = usePathname().split("/")
+
   const { mutate } = useSWRConfig()
   const URL = `/api/train?operationalTrainNumber=${operationalTrainNumber}&scheduledDepartureDateTime=${scheduledDepartureDateTime}`
   const { data: stations, error, isLoading } = useSWR<IGroupedByStation[]>(URL, fetcher)
+
+  const [displayPreviousStations, set_displayPreviousStations] = useState(false)
+  const [displayUpComingStations, ste_displayUpComingStations] = useState(false)
+
+  const groupedStations = stations?.reduce<{ relevantStations: IGroupedByStation[], previousStations: IGroupedByStation[], upcomingStations: IGroupedByStation[] }>((acc, cur, idx, arr) => {
+    const isBeforeFromStation = idx < arr.findIndex(item => item.station === from)
+    const isAfterToStation = idx > arr.findIndex(item => item.station === to)
+
+    if (isBeforeFromStation) acc.previousStations.push(cur)
+    else if (isAfterToStation) acc.upcomingStations.push(cur)
+    else acc.relevantStations.push(cur)
+
+    return acc
+  }, {
+    relevantStations: [],
+    previousStations: [],
+    upcomingStations: [],
+  })
 
   if (isLoading) {
     return (
@@ -61,9 +83,51 @@ export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartu
             Hittar ingen tidtabell
           </p>
         )}
-        {stations?.map((station, idx) => (
-          <Station key={station.station} station={station} isLast={stations.length === idx + 1} />
+        {!!groupedStations?.previousStations?.length && (
+          <>
+            <button
+              onClick={() => set_displayPreviousStations(prev => !prev)}
+              className='w-full text-sm text-slate-900/75 dark:text-slate-300/75'
+            >
+              {displayPreviousStations ? "Göm tidigare stationer" : "Visa tidigare stationer"}
+            </button>
+
+            {displayPreviousStations && (
+              <>
+                {groupedStations.previousStations.map((station, idx) => (
+                  <Station key={station.station} station={station} isLast={groupedStations.previousStations.length === idx + 1} />
+                ))}
+
+                <div className='border-b border-b-slate-600' />
+              </>
+            )}
+          </>
+        )}
+
+        {groupedStations?.relevantStations?.map((station, idx) => (
+          <Station key={station.station} station={station} isLast={groupedStations?.relevantStations.length === idx + 1} />
         ))}
+
+        {!!groupedStations?.upcomingStations?.length && (
+          <>
+            {displayUpComingStations && (
+              <>
+                <div className='border-t border-t-slate-600' />
+
+                {groupedStations.upcomingStations.map((station, idx) => (
+                  <Station key={station.station} station={station} isLast={groupedStations.upcomingStations.length === idx + 1} />
+                ))}
+              </>
+            )}
+
+            <button 
+              onClick={() => ste_displayUpComingStations(prev => !prev)}
+              className='w-full text-sm text-slate-900/75 dark:text-slate-300/75'
+            >
+              {displayUpComingStations ? "Göm efterliggande stationer" : "Visa efterliggande stationer"}
+            </button>
+          </>
+        )}
       </div>
     </div>
   )
