@@ -12,11 +12,11 @@ export interface ILayout {
   };
 }
 
-const Layout = ({ children, params }: ILayout) => {
-  const isValidFromDate = [stationStockholm, stationUppsala].includes(params.from)
-  const isValidToDate = [stationStockholm, stationUppsala].includes(params.to)
+const Layout = ({ children, params, ...props }: ILayout) => {
+  const isValidFromStation = [stationStockholm, stationUppsala].includes(params.from)
+  const isValidToStation = [stationStockholm, stationUppsala].includes(params.to)
 
-  if (!isValidFromDate || !isValidToDate) {
+  if (!isValidFromStation || !isValidToStation) {
     notFound()
   }
 

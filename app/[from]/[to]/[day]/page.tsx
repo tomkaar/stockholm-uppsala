@@ -11,7 +11,7 @@ import { SwitchDestinationButton } from "../../../_components/SwitchDestinationB
 
 export const revalidate = 30;
 
-const Home = async ({ params }: any) => {
+const Home = async ({ params, ...props }: any) => {
   const fromStation = params?.from ?? stationStockholm;
   const toStation = params?.to ?? stationUppsala;
   const selectedDay = params?.day ?? dayjs().format("YYYY-MM-DD");

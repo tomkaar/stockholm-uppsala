@@ -59,6 +59,7 @@ export const getTrains = async (fromStation: string = stationStockholm, toStatio
             <INCLUDE>EstimatedTimeAtLocation</INCLUDE>
             <INCLUDE>AdvertisedTrainIdent</INCLUDE>
             <INCLUDE>OperationalTrainNumber</INCLUDE>
+            <INCLUDE>ScheduledDepartureDateTime</INCLUDE>
             <INCLUDE>ProductInformation</INCLUDE>
             <INCLUDE>Canceled</INCLUDE>
             <INCLUDE>ModifiedTime</INCLUDE>

@@ -38,7 +38,7 @@ export const getMessages = async (station: string = stationStockholm) => {
     throw new Error("Kunde inte hämta meddelanden")
   }
 
-  const result = await response.json() as TrainMessageResponse
+  const result: TrainMessageResponse = await response.json()
 
   const TrainMessages = result?.RESPONSE?.RESULT?.[0]?.TrainMessage ?? []
 

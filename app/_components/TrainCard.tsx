@@ -3,7 +3,10 @@
 import { codeCancelled } from "@/constants/codes";
 import { TrainAnnouncement } from "@/types/TrainAnnouncement";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { AdditionalInformation } from "./TrainCard.AdditionalInformation";
+import ErrorBoundary from "./DistruptionMessages/DistruptionMessages.ErrorBoundary";
+import { Time } from "./TrainCard.Time";
 
 export type TTrainCard = {
   announcement: TrainAnnouncement;
@@ -71,7 +74,7 @@ export const TrainCard = ({ announcement, isDisabled }: TTrainCard) => {
       </button>
 
       {displayAdditionalInformation && (
-        <div className="p-4 border-t border-slate-900/10 dark:border-slate-700">
+        <div className="space-y-4 p-4 border-t border-slate-900/10 dark:border-slate-700">
           {((announcement.OtherInformation?.length ?? 0) === 0 && (announcement.Booking?.length ?? 0 === 0)) ? (
             <p className="text-sm text-slate-900 dark:text-slate-300">Ingen ytterligare information</p>
           ) : (
@@ -84,77 +87,10 @@ export const TrainCard = ({ announcement, isDisabled }: TTrainCard) => {
               ))}
             </ul>
           )}
+
+          <AdditionalInformation operationalTrainNumber={announcement.OperationalTrainNumber ?? ""} scheduledDepartureDateTime={announcement.ScheduledDepartureDateTime ?? ""} />
         </div>
       )}
     </div>
-  );
-};
-
-type TTime = {
-  announcement: TrainAnnouncement;
-};
-
-const Time = ({ announcement }: TTime) => {
-  const isDelayed = !!announcement.EstimatedTimeAtLocation;
-  const isCanceled = announcement.Canceled;
-  const hasDepartured = announcement.TimeAtLocation;
-
-  if (isCanceled) {
-    return (
-      <span className="text-sm text-slate-500 dark:text-slate-400">
-        <time
-          className="line-through"
-          dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format(
-            "HH:mm"
-          )}
-        >
-          {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
-        </time>
-
-        <span className="text-rose-500 dark:text-rose-800 ml-2 font-bold">
-          Inställt
-        </span>
-      </span>
-    );
-  }
-
-  if (isDelayed) {
-    return (
-      <span className="text-sm text-slate-500 dark:text-slate-400">
-        {hasDepartured && <span className="mr-1">Lämnat stationen:</span>}
-
-        <time
-          className="line-through"
-          dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format(
-            "HH:mm"
-          )}
-        >
-          {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
-        </time>
-
-        <time
-          className="text-rose-500 dark:text-rose-800 ml-2 font-bold"
-          dateTime={dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
-        >
-          {dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
-        </time>
-
-        {announcement.EstimatedTimeIsPreliminary && (
-          <span className="ml-1">Preliminär</span>
-        )}
-      </span>
-    );
-  }
-
-  return (
-    <span className="text-sm text-slate-500 dark:text-slate-400">
-      {hasDepartured && <span className="mr-1">Lämnade stationen:</span>}
-
-      <time
-        dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
-      >
-        {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
-      </time>
-    </span>
   );
 };
