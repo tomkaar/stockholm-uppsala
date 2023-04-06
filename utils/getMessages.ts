@@ -1,25 +1,22 @@
 import { stationStockholm } from "@/constants/stations"
 import { TrainMessageResponse } from "@/types/Response"
 
-export interface IhandleFetchMessages {
-  station?: string
-}
-
-export const handleFetchMessages = async ({ station }: IhandleFetchMessages) => {
-  const _station = station ?? stationStockholm
-
+export const getMessages = async (station: string = stationStockholm) => {
   const response = await fetch("https://api.trafikinfo.trafikverket.se/v2/data.json", {
     method: "POST",
     headers: {
       "Content-Type": "application/xml",
       Accept: "application/json",
     },
+    next: {
+      revalidate: 10,
+    },
     body: `
       <REQUEST>
         <LOGIN authenticationkey='${process.env.AUTH_KEY}' />
           <QUERY objecttype='TrainMessage' schemaversion='1.7'>
             <FILTER>
-              <EQ name="TrafficImpact.AffectedLocation.LocationSignature" value="${_station}" />
+              <EQ name="TrafficImpact.AffectedLocation.LocationSignature" value="${station}" />
             </FILTER>
 
             <INCLUDE>EventId</INCLUDE>
@@ -29,15 +26,21 @@ export const handleFetchMessages = async ({ station }: IhandleFetchMessages) => 
             <INCLUDE>Header</INCLUDE>
             <INCLUDE>EndDateTime</INCLUDE>
             <INCLUDE>StartDateTime</INCLUDE>
+            <INCLUDE>PrognosticatedEndDateTimeTrafficImpact</INCLUDE>
             <INCLUDE>ReasonCodeText</INCLUDE>
             <INCLUDE>TrafficImpact</INCLUDE>
         </QUERY>
       </REQUEST>
     `,
   })
-  const result = await response.json() as TrainMessageResponse
 
-  const TrainMessage = result.RESPONSE.RESULT[0].TrainMessage ?? []
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta meddelanden")
+  }
 
-  return TrainMessage
+  const result: TrainMessageResponse = await response.json()
+
+  const TrainMessages = result?.RESPONSE?.RESULT?.[0]?.TrainMessage ?? []
+
+  return TrainMessages
 }
