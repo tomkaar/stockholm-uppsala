@@ -9,9 +9,9 @@ import { filterTrainAnnouncements } from "../../../_utils/filterTrainAnnouncemen
 import { RefreshTrainsButton } from "../../../_components/RefreshTrainsButton";
 import { SwitchDestinationButton } from "../../../_components/SwitchDestinationButton";
 
-export const revalidate = 30;
+export const revalidate = 60;
 
-const Home = async ({ params, ...props }: any) => {
+const Home = async ({ params }: any) => {
   const fromStation = params?.from ?? stationStockholm;
   const toStation = params?.to ?? stationUppsala;
   const selectedDay = params?.day ?? dayjs().format("YYYY-MM-DD");
