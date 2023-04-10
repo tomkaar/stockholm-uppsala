@@ -38,16 +38,6 @@ export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartu
     upcomingStations: [],
   })
 
-  if (isLoading) {
-    return (
-      <div className="mt-4 animate-pulse flex flex-col gap-2">
-        <div className="w-4/12 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-        <div className="w-11/12 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-        <div className="w-9/12 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-      </div>
-    )
-  }
-
   if (error) {
     return (
       <div className="border-t border-t-slate-700 pt-4 mt-4 flex flex-row gap-2 justify-between items-center">
@@ -71,7 +61,11 @@ export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartu
       <div className="flex flex-row justify-between items-center">
         <div className="text-base text-slate-900 font-semibold dark:text-slate-300">Tidtabell</div>
 
-        <button onClick={() => mutate(URL)} className="flex flex-row justify-center items-center rounded-full py-1 px-3 h-8 bg-slate-300 dark:db-slate-800">
+        <button
+          onClick={() => mutate(URL)}
+          className="flex flex-row justify-center items-center rounded-full py-1 px-3 h-8 bg-slate-300 dark:db-slate-800"
+          disabled={isLoading}
+        >
           <span className="block mr-2 text-xs">Hämta igen</span>
           <Refresh width={12} height={12} />
         </button>
@@ -106,6 +100,10 @@ export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartu
 
         {groupedStations?.relevantStations?.map((station, idx) => (
           <Station key={station.station} station={station} isLast={groupedStations?.relevantStations.length === idx + 1} />
+        ))}
+
+        {isLoading && ["one", "two", "three", "four"]?.map((station, idx) => (
+          <Station key={station} isLoading isLast={4 === idx + 1} />
         ))}
 
         {!!groupedStations?.upcomingStations?.length && (
