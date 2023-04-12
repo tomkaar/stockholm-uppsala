@@ -42,6 +42,7 @@ export const GET = async (request: Request) => {
             <INCLUDE>OperationalTrainNumber</INCLUDE>
             <INCLUDE>Canceled</INCLUDE>
             <INCLUDE>EstimatedTimeIsPreliminary</INCLUDE>
+            <INCLUDE>TrackAtLocation</INCLUDE>
         </QUERY>
       </REQUEST>
     `,

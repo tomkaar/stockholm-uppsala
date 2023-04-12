@@ -32,9 +32,9 @@ export const Station = ({ station, isLast, isLoading }: IStation) => {
 
             <p className={`mt-1`}>
               {isLoading && (
-                <div className="pt-1 pb-1">
-                  <div className="pt-1 pb-1 w-12 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                </div>
+                <span className="block pt-1 pb-1">
+                  <span className="block pt-1 pb-1 w-12 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+                </span>
               )}
 
               {station?.ankomst && <StationTime announcement={station?.ankomst} />}
@@ -51,6 +51,14 @@ export const Station = ({ station, isLast, isLoading }: IStation) => {
             {hasDepartured && <div className="text-sm text-right text-slate-500 dark:text-slate-400">Har lämnat stationen</div>}
             {isCanceled && <div className={`${isDelayed || isCanceled ? ' text-right text-rose-500 dark:text-rose-500' : ''}`}>Installt</div>}
             {isDelayed && <div className={`${isDelayed || isCanceled ? ' text-right text-rose-500 dark:text-rose-500' : ''}`}>Försenad</div>}
+            {(station?.ankomst?.TrackAtLocation || station?.avgang?.TrackAtLocation) && (
+              <div className="text-sm text-right text-slate-500 dark:text-slate-400">
+                Spår: {station?.ankomst?.TrackAtLocation || station?.avgang?.TrackAtLocation}
+              </div>
+            )}
+            {isLoading && (
+              <div className="h-4 w-12 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+            )}
           </div>
         </div>
 
