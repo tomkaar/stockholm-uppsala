@@ -4,6 +4,7 @@ import { Refresh } from "@/assets/icons/Refresh"
 import { Station } from './TrainCard.Station'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import dayjs from 'dayjs'
 
 export interface IAdditionalInformation {
   operationalTrainNumber: string,
@@ -11,14 +12,15 @@ export interface IAdditionalInformation {
 }
 
 // @ts-expect-error - don't care about types for fetcher
-const fetcher = (url, options, ...args) => fetch(url, { ...(options ?? {}), next: { revalidate: 30 }}, ...args).then(res => res.json())
+const fetcher = (url, options, ...args) => fetch(url, { ...(options ?? {})}, ...args).then(res => res.json()).then(res => ({ stations: res, date: new Date() }))
 
 export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartureDateTime }: IAdditionalInformation) => {
   const [_, from, to] = usePathname().split("/")
 
   const { mutate } = useSWRConfig()
   const URL = `/api/train?operationalTrainNumber=${operationalTrainNumber}&scheduledDepartureDateTime=${scheduledDepartureDateTime}`
-  const { data: stations, error, isLoading } = useSWR<IGroupedByStation[]>(URL, fetcher)
+  const { data, error, isLoading } = useSWR<{ stations: IGroupedByStation[], date: Date }>(URL, fetcher)
+  const { stations, date } = data ?? {}
 
   const [displayPreviousStations, set_displayPreviousStations] = useState(false)
   const [displayUpComingStations, ste_displayUpComingStations] = useState(false)
@@ -60,15 +62,9 @@ export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartu
     <div className="flex flex-col relative space-y-4 border-t border-t-slate-900/10 dark:border-t-slate-700 pt-4 ">
       <div className="flex flex-row justify-between items-center">
         <div className="text-base text-slate-900 font-semibold dark:text-slate-300">Tidtabell</div>
-
-        <button
-          onClick={() => mutate(URL)}
-          className="flex flex-row justify-center items-center rounded-full py-1 px-3 h-8 bg-slate-300 dark:db-slate-800"
-          disabled={isLoading}
-        >
-          <span className="block mr-2 text-xs">Hämta igen</span>
-          <Refresh width={12} height={12} />
-        </button>
+        <span className='text-sm text-right text-slate-500 dark:text-slate-400'>
+          {isLoading ? "Hämtar tidtabell" : `Hämtad ${dayjs(date).format("HH:mm:ss")}`}
+        </span>
       </div>
 
       <div className="space-y-4">
