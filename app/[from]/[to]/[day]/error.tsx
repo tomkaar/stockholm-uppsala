@@ -1,5 +1,7 @@
 "use client"
 
+import { RefreshTrainsButton } from "../../../_components/RefreshTrainsButton"
+
 export const Error = () => {
   return (
     <div className="w-full flex flex-row justify-center pt-8">
@@ -8,6 +10,8 @@ export const Error = () => {
           Kunde inte hämta resor
         </p>
       </div>
+
+      <RefreshTrainsButton />
     </div>
   )
 }
