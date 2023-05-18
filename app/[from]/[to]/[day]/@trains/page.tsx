@@ -22,7 +22,7 @@ export default async function Home({ params }: ITrainsPage) {
   const { previousTrains, upcomingTrains } = groupTrainAnnouncements(trains)
 
   return (
-    <div className="flex flex-row justify-center">
+    <div className="flex flex-row justify-center px-4">
       <div className="flex flex-col gap-2 max-w-md w-full my-6 mt-2 mb-4">
         <div className="self-end text-xs text-slate-900/50 dark:text-slate-300/75">
           Hämtad: {dayjs(date).format("HH:mm:ss")}
