@@ -10,6 +10,7 @@ import DistruptionMessagesError from "./@distruptionMessages/error";
 import DistruptionMessagesLoading from "./@distruptionMessages/loading";
 import TrainsError from "./@trains/error";
 import TrainsLoading from "./@trains/loading";
+import dayjs from "dayjs";
 
 
 export interface ILayout {
@@ -22,8 +23,9 @@ export interface ILayout {
 export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
   const isValidFromStation = [stationStockholm, stationUppsala].includes(params.from)
   const isValidToStation = [stationStockholm, stationUppsala].includes(params.to)
+  const dayIsBeforeToday = dayjs(params.day).isBefore(dayjs(), "day")
 
-  if (!isValidFromStation || !isValidToStation) {
+  if (!isValidFromStation || !isValidToStation || dayIsBeforeToday) {
     notFound()
   }
 
