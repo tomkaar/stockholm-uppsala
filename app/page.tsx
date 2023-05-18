@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export const revalidate = 60
 
-const Home = async () => {
-  const today = dayjs().format("YYYY-MM-DD")
+async function Home () {
+  const today = await new Promise((resolve) => resolve(dayjs().format("YYYY-MM-DD")))
 
   return (
     <main className="flex flex-row justify-center pt-12">
