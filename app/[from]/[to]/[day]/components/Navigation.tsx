@@ -30,16 +30,16 @@ export const Navigation = () => {
           <ChevronLeft />
         </div>
       ): (
-        <Link href={previousDayString} aria-label={`Föregående dag (${dayjs(day).format("YYYY-MM-DD")})`}>
+        <Link prefetch={false} href={previousDayString} aria-label={`Föregående dag (${dayjs(day).format("YYYY-MM-DD")})`}>
           <ChevronLeft />
         </Link>
       )}
 
-      <Link className='capitalize' href={todayDayString}>
+      <Link prefetch={false} className='capitalize' href={todayDayString}>
         {dayjs(day).format("dddd MMM DD")}
       </Link>
 
-      <Link href={nextDayString} aria-label={`Nästa dag (${dayjs(day).format("YYYY-MM-DD")})`}>
+      <Link prefetch={false} href={nextDayString} aria-label={`Nästa dag (${dayjs(day).format("YYYY-MM-DD")})`}>
         <ChevronRight />
       </Link>
     </nav>

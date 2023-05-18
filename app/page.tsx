@@ -22,7 +22,7 @@ async function Home () {
           Resor mellan Stockholm och<br /> Uppsala där Movingo gäller.
         </p>
   
-        <LinkButton href={`/Cst/U/${today}`}>
+        <LinkButton prefetch={false} href={`/Cst/U/${today}`}>
           <span className="font-semibold">Stockholm</span>
           &nbsp;
           <ChevronRight width="16" height="16" />
@@ -32,7 +32,7 @@ async function Home () {
   
         <span className="block text-center text-sm text-slate-900 dark:text-slate-300 my-2">eller</span>
   
-        <LinkButton href={`/U/Cst/${today}`}>
+        <LinkButton prefetch={false} href={`/U/Cst/${today}`}>
           <span className="font-semibold">Uppsala</span>
           &nbsp;
           <ChevronRight width="16" height="16" />
