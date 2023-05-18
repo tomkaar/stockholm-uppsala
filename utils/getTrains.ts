@@ -91,5 +91,5 @@ export const getTrains = async (fromStation: string = stationStockholm, toStatio
       !announcement?.OtherInformation?.some(info => info.Code === codeOnlySJTicket)
     )
 
-  return filteredAnnouncements
+  return { trains: filteredAnnouncements, date: new Date() }
 };
