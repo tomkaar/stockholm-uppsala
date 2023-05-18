@@ -1,5 +1,5 @@
 import useSWR, { useSWRConfig } from 'swr'
-import { IGroupedByStation } from "../../api/train/route"
+import { IGroupedByStation } from "@/app/api/train/route"
 import { Refresh } from "@/assets/icons/Refresh"
 import { Station } from './TrainCard.Station'
 import { usePathname } from 'next/navigation'

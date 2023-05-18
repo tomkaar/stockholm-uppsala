@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HTMLProps, ReactNode } from "react";
+import { HTMLProps } from "react";
 
 export interface ILinkButton extends HTMLProps<HTMLAnchorElement> {
   href: string

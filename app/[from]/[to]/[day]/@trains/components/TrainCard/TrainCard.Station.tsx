@@ -1,4 +1,4 @@
-import { IGroupedByStation } from "../../api/train/route"
+import { IGroupedByStation } from "@/app/api/train/route"
 import { StationTime } from "./TrainCard.Station.Time"
 
 export interface IStation {

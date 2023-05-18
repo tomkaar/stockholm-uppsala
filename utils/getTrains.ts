@@ -1,5 +1,3 @@
-import "server-only"
-
 import { stationStockholm, stationUppsala } from "@/constants/stations";
 import dayjs from "dayjs";
 import { TrainAnnouncementResponse } from "@/types/Response";
@@ -76,11 +74,12 @@ export const getTrains = async (fromStation: string = stationStockholm, toStatio
     `,
   })
   .then(res => res.json())
+  .then(data => ({ data, date: new Date() }))
   .catch((err) => console.error("err --->", err))
 
-  const result = response as TrainAnnouncementResponse
+  const { data, date } = response as { data: TrainAnnouncementResponse, date: Date }
 
-  const TrainAnnouncements = result.RESPONSE.RESULT[0].TrainAnnouncement ?? []
+  const TrainAnnouncements = data.RESPONSE.RESULT[0].TrainAnnouncement ?? []
 
   // filter valid trains
   const filteredAnnouncements = TrainAnnouncements
@@ -91,5 +90,5 @@ export const getTrains = async (fromStation: string = stationStockholm, toStatio
       !announcement?.OtherInformation?.some(info => info.Code === codeOnlySJTicket)
     )
 
-  return { trains: filteredAnnouncements, date: new Date() }
+  return { trains: filteredAnnouncements, date }
 };

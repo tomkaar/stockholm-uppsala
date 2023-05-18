@@ -5,7 +5,7 @@ import { stationStockholm, stationUppsala } from "@/constants/stations"
 
 import { Dialog } from '@headlessui/react'
 import { useState } from "react"
-import { Button } from "./Button"
+import { Button } from "@/components/Button"
 
 export interface IFAQ {
   from?: string

@@ -1,14 +1,17 @@
-import "server-only"
-
-import { use } from "react";
-import { DisruptionMessage } from "./DisruptionMessage";
-import { getMessages } from "../../../utils/getMessages";
 import { stationStockholm } from "@/constants/stations";
 import dayjs from "dayjs";
+import { getMessages } from "@/utils/getMessages";
+import { DisruptionMessage } from "./components/DisruptionMessage";
+import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams";
 
-export const Content = ({ from, day }: { from: string; day: string }) => {
-  const fromStataion = from ?? stationStockholm
-  const messages = use(getMessages(fromStataion))
+interface IDistruptionMessagesPage {
+  params: TrainInformationRouteParams;
+};
+
+export default async function DistruptionMessages({ params }: IDistruptionMessagesPage) {
+  const fromStataion = params.from ?? stationStockholm
+  const day = params.day ?? dayjs()
+  const messages = await getMessages(fromStataion)
 
   const visibleMessages = messages?.filter(message => {
     const hasBeenResolvedOnThisDay = dayjs(message.PrognosticatedEndDateTimeTrafficImpact).isAfter(day, "day") || dayjs(message.PrognosticatedEndDateTimeTrafficImpact).isSame(day, "day")

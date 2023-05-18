@@ -1,7 +1,7 @@
-import { ChevronRight } from "@/assets/icons/ChevronRight"
 import dayjs from "dayjs"
-import { LinkButton } from "./_components/LinkButton"
 import { Metadata } from "next";
+import { ChevronRight } from "@/assets/icons/ChevronRight"
+import { LinkButton } from "@/components/LinkButton"
 
 export const metadata: Metadata = {
   title: "Stockholm - Uppsala med Movingo",

@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 
-import '../src/init/dayjs'
-import { Header } from './_components/Header';
+import '@/init/dayjs'
+import { Header } from './[from]/[to]/[day]/components/Header';
 import { Metadata } from 'next';
 
 interface IRootLayout {

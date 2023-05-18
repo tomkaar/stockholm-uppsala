@@ -7,7 +7,7 @@ import dayjs from "dayjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import '../../src/init/dayjs'
+import '@/init/dayjs'
 
 export const Navigation = () => {
   const pathname = usePathname()

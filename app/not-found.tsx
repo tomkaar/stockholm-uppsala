@@ -1,4 +1,4 @@
-import { LinkButton } from "./_components/LinkButton"
+import { LinkButton } from "@/components/LinkButton"
 
 export const NotFound = () => (
   <div className="flex flex-col justify-center items-center mt-28 mb-20">

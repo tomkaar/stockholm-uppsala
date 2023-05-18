@@ -1,13 +1,11 @@
 import { Repeat } from "@/assets/icons/Repeat"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
-export interface ISwitchDestinationButton {
-  from: string
-  to: string
-  day: string
-}
+export const SwitchDestinationButton = () => {
+  const pathname = usePathname()
+  const [_, from, to, day] = (pathname ?? "")?.split("/")
 
-export const SwitchDestinationButton = ({ to, from, day }: ISwitchDestinationButton) => {
   return (
     <Link 
       aria-label="Byt håll"

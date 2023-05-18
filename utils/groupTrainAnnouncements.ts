@@ -6,7 +6,7 @@ export interface ReducerReturn {
   upcoming: TrainAnnouncement[]
 }
 
-export const filterTrainAnnouncements = (announcements: TrainAnnouncement[]) => {
+export const groupTrainAnnouncements = (announcements: TrainAnnouncement[]) => {
   const { previous, upcoming } = announcements.reduce<ReducerReturn>((acc, announcement) => {
     const timeHasPassed = dayjs(announcement.EstimatedTimeAtLocation ?? announcement.AdvertisedTimeAtLocation)
       .add(10, "minute")

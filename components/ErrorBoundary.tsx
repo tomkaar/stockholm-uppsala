@@ -4,6 +4,7 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 
 interface Props {
   children?: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
@@ -26,15 +27,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return (
-        <div className="w-full">
-          <div className="w-full px-4 py-4 text-center bg-orange-500 dark:bg-orange-500 border-b border-b-slate-200 dark:border-b-slate-900">
-            <p className="text-sm text-slate-200 dark:text-slate-200">
-              Kunde inte hämta trafik meddelanden
-            </p>
-          </div>
-        </div>
-      )
+      return this.props.fallback ?? <h1>Någonting gick fel, försök igen senare</h1>;
     }
 
     return this.props.children;

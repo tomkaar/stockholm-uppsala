@@ -1,18 +1,25 @@
 import { stationStockholm, stationUppsala } from "@/constants/stations";
-import { DistruptionMessages } from "../../../_components/DistruptionMessages/DistruptionMessages";
-import { Navigation } from "../../../_components/Navigation";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams";
+import { Navigation } from "./components/Navigation";
+
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+import DistruptionMessagesError from "./@distruptionMessages/error";
+import DistruptionMessagesLoading from "./@distruptionMessages/loading";
+import TrainsError from "./@trains/error";
+import TrainsLoading from "./@trains/loading";
+
 
 export interface ILayout {
   children: React.ReactNode;
-  params: {
-    from: string;
-    to: string;
-    day: string;
-  };
+  distruptionMessages: React.ReactNode;
+  trains: React.ReactNode;
+  params: TrainInformationRouteParams;
 }
 
-const Layout = ({ children, params, ...props }: ILayout) => {
+export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
   const isValidFromStation = [stationStockholm, stationUppsala].includes(params.from)
   const isValidToStation = [stationStockholm, stationUppsala].includes(params.to)
 
@@ -23,10 +30,20 @@ const Layout = ({ children, params, ...props }: ILayout) => {
   return (
     <>
       <Navigation />
-      <DistruptionMessages from={params.from} day={params.day} />
+
+      <ErrorBoundary fallback={<DistruptionMessagesError />}>
+        <Suspense fallback={<DistruptionMessagesLoading />}>
+          {distruptionMessages}
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary fallback={<TrainsError />}>
+        <Suspense fallback={<TrainsLoading />}>
+          {trains}
+        </Suspense>
+      </ErrorBoundary>
+
       {children}
     </>
   )
 }
-
-export default Layout;
