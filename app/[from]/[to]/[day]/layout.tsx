@@ -23,7 +23,7 @@ export interface ILayout {
 export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
   const isValidFromStation = [stationStockholm, stationUppsala].includes(params.from)
   const isValidToStation = [stationStockholm, stationUppsala].includes(params.to)
-  const dayIsBeforeToday = dayjs(params.day).isBefore(dayjs(), "day")
+  const dayIsBeforeToday = await new Promise<boolean>(res => res(dayjs(params.day).isBefore(dayjs(), "day")))
 
   if (!isValidFromStation || !isValidToStation || dayIsBeforeToday) {
     notFound()
