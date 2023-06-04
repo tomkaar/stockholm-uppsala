@@ -1,3 +1,6 @@
 export const codeMovingoNoValid = "ONA181"
 export const codeOnlySJTicket = "ONA179"
 export const codeCancelled = "ANA027"
+export const SJInterCity = "PNA023"
+export const SJRegional = "PNA025"
+export const Malartag = "PNA014"

@@ -19,7 +19,7 @@ export default async function Home({ params }: ITrainsPage) {
 
   const { date, trains } = await getTrains(fromStation, toStation, selectedDay);
 
-  const { previousTrains, upcomingTrains } = groupTrainAnnouncements(trains)
+  const { previousTrains, upcomingTrains } = groupTrainAnnouncements({ trains })
 
   return (
     <div className="flex flex-row justify-center px-4">
@@ -32,8 +32,9 @@ export default async function Home({ params }: ITrainsPage) {
 
         {upcomingTrains.map((announcement) => (
           <TrainCard
-            key={announcement.ActivityId}
-            announcement={announcement}
+            key={announcement.AdvertisedTrainIdent}
+            departure={announcement.departure}
+            arrival={announcement.arrival}
           />
         ))}
       </div>

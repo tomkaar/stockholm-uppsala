@@ -5,7 +5,11 @@ import { useState } from "react"
 import { TrainCard } from "./TrainCard/TrainCard"
 
 export interface IPreviousTrainsAnnouncements {
-  announcements: TrainAnnouncement[]
+  announcements: {
+    AdvertisedTrainIdent: string
+    departure: TrainAnnouncement
+    arrival?: TrainAnnouncement
+  }[]
 }
 
 export const PreviousTrainsAnnouncements = ({ announcements }: IPreviousTrainsAnnouncements) => {
@@ -25,7 +29,12 @@ export const PreviousTrainsAnnouncements = ({ announcements }: IPreviousTrainsAn
           {displayPreviousTrains && (
             <>
               {announcements?.map(announcement => (
-                <TrainCard key={announcement.ActivityId} announcement={announcement} isDisabled />
+                <TrainCard
+                  key={announcement.AdvertisedTrainIdent}
+                  departure={announcement.departure}
+                  arrival={announcement.arrival}
+                  isDisabled
+                />
               ))}
 
               <div className="my-4 h-1 rounded-full bg-slate-50 dark:bg-slate-800" />
