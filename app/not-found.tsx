@@ -50,8 +50,8 @@ export const NotFound = () => {
 }
 
 const getValidStationNamesForRedirect = (_from: string, _to: string) => {
-  const fromValueIsvalid = [stationStockholm, stationUppsala].includes(_from)
-  const toValueIsvalid = [stationStockholm, stationUppsala].includes(_to)
+  const fromValueIsvalid = ["Stockholm", "Uppsala"].includes(_from)
+  const toValueIsvalid = ["Stockholm", "Uppsala"].includes(_to)
   const toAndFromAreNotTheSame = _from !== _to
 
   if (fromValueIsvalid && toValueIsvalid && toAndFromAreNotTheSame) {
