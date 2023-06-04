@@ -1,17 +1,18 @@
-import { stationStockholm } from "@/constants/stations";
 import dayjs from "dayjs";
-import { getMessages } from "@/utils/getMessages";
+import { getTrainMessages } from "@/lib/trafikverket/trainMessages/getTrainMessages";
 import { DisruptionMessage } from "./components/DisruptionMessage";
 import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams";
+import getStationName from "@/utils/getStationName";
 
 interface IDistruptionMessagesPage {
   params: TrainInformationRouteParams;
 };
 
 export default async function DistruptionMessages({ params }: IDistruptionMessagesPage) {
-  const fromStataion = params.from ?? stationStockholm
+  const fromStation = getStationName(params?.from)
   const day = params.day ?? dayjs()
-  const messages = await getMessages(fromStataion)
+  if (!fromStation) return null
+  const messages = await getTrainMessages(fromStation.tåg)
 
   const visibleMessages = messages?.filter(message => {
     const hasBeenResolvedOnThisDay = dayjs(message.PrognosticatedEndDateTimeTrafficImpact).isAfter(day, "day") || dayjs(message.PrognosticatedEndDateTimeTrafficImpact).isSame(day, "day")

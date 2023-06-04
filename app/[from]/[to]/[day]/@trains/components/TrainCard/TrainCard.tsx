@@ -15,6 +15,7 @@ export type TTrainCard = {
 export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
   const [displayAdditionalInformation, set_displayAdditionalInformation] = useState(false);
 
+  const isPendelTag = !!departure?.TypeOfTraffic?.find(traffic => traffic.Description === "Pendeltåg") 
   const isMalartag = departure?.ProductInformation?.find(info => info.Code === Malartag);
   const isSJRegional = departure?.ProductInformation?.find(info => info.Code === SJRegional);
 
@@ -50,7 +51,7 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
               <Time announcement={departure} />
               {arrival && (
                 <>
-                {" - "}
+                <span className="text-sm text-slate-500 dark:text-slate-400">{" - "}</span>
                 <Time announcement={arrival} displayCancelled={false} displayLeftStation={false} />
                 </>
               )}
@@ -89,6 +90,7 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
           <AdditionalInformation
             operationalTrainNumber={departure.OperationalTrainNumber ?? ""}
             scheduledDepartureDateTime={departure.ScheduledDepartureDateTime ?? ""}
+            isCommuterTrain={isPendelTag}
           />
         </div>
       )}

@@ -1,4 +1,3 @@
-import { stationStockholm, stationUppsala } from "@/constants/stations";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams";
 import { Navigation } from "./components/Navigation";
@@ -21,8 +20,8 @@ export interface ILayout {
 }
 
 export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
-  const isValidFromStation = [stationStockholm, stationUppsala].includes(params.from)
-  const isValidToStation = [stationStockholm, stationUppsala].includes(params.to)
+  const isValidFromStation = ["Uppsala", "Stockholm"].includes(params.from)
+  const isValidToStation = ["Uppsala", "Stockholm"].includes(params.to)
   const dayIsBeforeToday = await new Promise<boolean>(res => res(dayjs(params.day).isBefore(dayjs(), "day")))
 
   if (!isValidFromStation || !isValidToStation || dayIsBeforeToday) {

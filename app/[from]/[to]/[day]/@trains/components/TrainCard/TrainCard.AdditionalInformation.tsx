@@ -5,17 +5,21 @@ import { Station } from './TrainCard.Station'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import dayjs from 'dayjs'
+import getStationName from '@/utils/getStationName'
 
 export interface IAdditionalInformation {
   operationalTrainNumber: string,
   scheduledDepartureDateTime: string
+  isCommuterTrain?: boolean
 }
 
 // @ts-expect-error - don't care about types for fetcher
 const fetcher = (url, options, ...args) => fetch(url, { ...(options ?? {})}, ...args).then(res => res.json()).then(res => ({ stations: res, date: new Date() }))
 
-export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartureDateTime }: IAdditionalInformation) => {
+export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartureDateTime, isCommuterTrain: isPendelTag = false }: IAdditionalInformation) => {
   const [_, from, to] = usePathname().split("/")
+  const fromStation = isPendelTag ? getStationName(from)?.pendeltåg : getStationName(from)?.tåg;
+  const toStation = isPendelTag ? getStationName(to)?.pendeltåg : getStationName(to)?.tåg;
 
   const { mutate } = useSWRConfig()
   const URL = `/api/train?operationalTrainNumber=${operationalTrainNumber}&scheduledDepartureDateTime=${scheduledDepartureDateTime}`
@@ -26,12 +30,26 @@ export const AdditionalInformation = ({ operationalTrainNumber, scheduledDepartu
   const [displayUpComingStations, ste_displayUpComingStations] = useState(false)
 
   const groupedStations = stations?.reduce<{ relevantStations: IGroupedByStation[], previousStations: IGroupedByStation[], upcomingStations: IGroupedByStation[] }>((acc, cur, idx, arr) => {
-    const isBeforeFromStation = idx < arr.findIndex(item => item.station === from)
-    const isAfterToStation = idx > arr.findIndex(item => item.station === to)
+    const departureStationExists = !!arr.find(item => item.station === fromStation)
+    const arrivalStationExists = !!arr.find(item => item.station === toStation)
 
-    if (isBeforeFromStation) acc.previousStations.push(cur)
-    else if (isAfterToStation) acc.upcomingStations.push(cur)
-    else acc.relevantStations.push(cur)
+    const isBeforeFromStation = idx < arr.findIndex(item => item.station === fromStation)
+    const isAfterToStation = idx > arr.findIndex(item => item.station === toStation)
+
+    if (departureStationExists && arrivalStationExists) {
+
+      if (isBeforeFromStation) acc.previousStations.push(cur)
+      else if (isAfterToStation) acc.upcomingStations.push(cur)
+      else acc.relevantStations.push(cur)
+    } else if (departureStationExists) {
+      if (isBeforeFromStation) acc.previousStations.push(cur)
+      else acc.relevantStations.push(cur)
+    } else if (arrivalStationExists) {
+      if (isAfterToStation) acc.upcomingStations.push(cur)
+      else acc.relevantStations.push(cur)
+    } else {
+      acc.relevantStations.push(cur)
+    }
 
     return acc
   }, {

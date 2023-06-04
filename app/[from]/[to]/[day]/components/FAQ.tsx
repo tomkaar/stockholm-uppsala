@@ -41,13 +41,14 @@ export const FAQ = ({ from = stationStockholm, to = stationUppsala }: IFAQ) => {
               </Dialog.Title>
 
               <Dialog.Description className="text-sm text-slate-500 dark:text-slate-300">
-                Här visas alla tåg (förutom pendeltåg) mellan {from} och {to}.
-                Sedan filtreras tågen med &quot;Movingo gäller ej.&quot; och &quot;Endast SJ-biljetter gäller.&quot; bort.
+                Vi hämtar tåg som går mellan Stockholm och Uppsala och filtrerar sedan ut tåg där Movingo biljetten inte gäller.
               </Dialog.Description>
-              <Dialog.Description className="text-sm text-slate-500 dark:text-slate-300 pt-2">
-                Detta innebär att det finns risk att tåg som inte stödjer movingo inte har filtrerats bort.
-                Var uppmärksam på tågen i listan, detta är ett pågående arbete.
-              </Dialog.Description>
+                
+              <ul className="list-disc pl-4 mt-2 text-sm text-slate-500 dark:text-slate-300">
+                <li>Tåg med notifieringen "Movingo gäller ej." visas ej.</li>
+                <li>Tåg med notifieringen "Endast SJ-biljetter gäller." visas ej.</li>
+                <li>SJ InterCity tåg visas ej.</li>
+              </ul>
             </div>
 
             <div>

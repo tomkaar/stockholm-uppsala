@@ -1,38 +1,24 @@
+import { groupByAdvertisedTrainIdent } from "@/lib/trafikverket/groupTrainsByAdvertisedTrainIdent";
+import { groupTrainsByArrivalAndDeparture } from "@/lib/trafikverket/groupTrainsByArrivalAndDeparture";
 import { TrainAnnouncement } from "@/types/TrainAnnouncement";
 import dayjs from "dayjs";
 
 export const groupTrainAnnouncements = ({
   trains,
+  fromStation,
+  toStation,
 }: {
   trains: TrainAnnouncement[];
+  fromStation: { tåg: string; pendeltåg: string };
+  toStation: { tåg: string; pendeltåg: string };
 }) => {
   const groupedByAdvertisedTrainIdent = groupByAdvertisedTrainIdent(trains);
 
-  const entries = Object.entries(groupedByAdvertisedTrainIdent);
-
-  const groupedByArrivalAndDeparture = entries.reduce<
-    {
-      AdvertisedTrainIdent: string;
-      departure: TrainAnnouncement;
-      arrival?: TrainAnnouncement;
-    }[]
-  >((acc, group) => {
-    const [AdvertisedTrainIdent, groupedTrains] = group;
-    const departure = groupedTrains.find(
-      (train) =>
-        train.LocationSignature === "U" && train.ActivityType === "Avgang"
-    );
-    const arrival = groupedTrains.find(
-      (train) =>
-        train.LocationSignature === "Cst" && train.ActivityType === "Ankomst"
-    );
-
-    if (departure === undefined) {
-      return acc;
-    }
-
-    return [...acc, { AdvertisedTrainIdent, departure, arrival }];
-  }, []);
+  const groupedByArrivalAndDeparture = groupTrainsByArrivalAndDeparture({
+    groupedTrains: groupedByAdvertisedTrainIdent,
+    fromStation,
+    toStation,
+  });
 
   const sortedByDeparture = groupedByArrivalAndDeparture.sort((a, b) => {
     return (
@@ -67,17 +53,3 @@ export const groupTrainAnnouncements = ({
     upcomingTrains: groupedTrains.upcoming,
   };
 };
-
-export interface IgroupByAdvertisedTrainIdent {
-  [key: string]: TrainAnnouncement[];
-}
-
-function groupByAdvertisedTrainIdent(trains: TrainAnnouncement[]) {
-  return trains.reduce<IgroupByAdvertisedTrainIdent>((group, train) => {
-    const { AdvertisedTrainIdent } = train;
-    if (!AdvertisedTrainIdent) return group;
-    group[AdvertisedTrainIdent] = group[AdvertisedTrainIdent] ?? [];
-    group[AdvertisedTrainIdent].push(train);
-    return group;
-  }, {});
-}
