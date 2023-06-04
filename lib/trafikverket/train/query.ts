@@ -1,16 +1,11 @@
 export interface IgetTrainsQuery {
-  dateFrom: string;
-  dateTo: string;
-  fromStation: string;
-  toStation: string;
+  dateFrom: string
+  dateTo: string
+  fromStation: string
+  toStation: string
 }
 
-export const getTrainsQuery = ({
-  dateFrom,
-  dateTo,
-  fromStation,
-  toStation,
-}: IgetTrainsQuery) => {
+export const getTrainsQuery = ({ dateFrom, dateTo, fromStation, toStation }: IgetTrainsQuery) => {
   return `
     <QUERY objecttype='TrainAnnouncement' schemaversion='1.8'>
       <FILTER>
@@ -65,5 +60,5 @@ export const getTrainsQuery = ({
       <INCLUDE>Service</INCLUDE>
       <INCLUDE>TrainComposition</INCLUDE>
   </QUERY>
-  `;
-};
+  `
+}

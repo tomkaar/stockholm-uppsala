@@ -1,5 +1,5 @@
 export interface IgetTrainMessagesQuery {
-  station: string;
+  station: string
 }
 
 export function getTrainMessagesQuery({ station }: IgetTrainMessagesQuery) {
@@ -20,5 +20,5 @@ export function getTrainMessagesQuery({ station }: IgetTrainMessagesQuery) {
       <INCLUDE>ReasonCodeText</INCLUDE>
       <INCLUDE>TrafficImpact</INCLUDE>
   </QUERY>
-  `;
+  `
 }

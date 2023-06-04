@@ -1,28 +1,27 @@
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams";
-import { Navigation } from "./components/Navigation";
+import dayjs from "dayjs"
+import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import ErrorBoundary from "@/components/ErrorBoundary"
+import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams"
 
-import DistruptionMessagesError from "./@distruptionMessages/error";
-import DistruptionMessagesLoading from "./@distruptionMessages/loading";
-import TrainsError from "./@trains/error";
-import TrainsLoading from "./@trains/loading";
-import dayjs from "dayjs";
-
+import DistruptionMessagesError from "./@distruptionMessages/error"
+import DistruptionMessagesLoading from "./@distruptionMessages/loading"
+import TrainsError from "./@trains/error"
+import TrainsLoading from "./@trains/loading"
+import { Navigation } from "./components/Navigation"
 
 export interface ILayout {
-  children: React.ReactNode;
-  distruptionMessages: React.ReactNode;
-  trains: React.ReactNode;
-  params: TrainInformationRouteParams;
+  children: React.ReactNode
+  distruptionMessages: React.ReactNode
+  trains: React.ReactNode
+  params: TrainInformationRouteParams
 }
 
 export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
   const isValidFromStation = ["Uppsala", "Stockholm"].includes(params.from)
   const isValidToStation = ["Uppsala", "Stockholm"].includes(params.to)
-  const dayIsBeforeToday = await new Promise<boolean>(res => res(dayjs(params.day).isBefore(dayjs(), "day")))
+  const dayIsBeforeToday = await new Promise<boolean>((res) => res(dayjs(params.day).isBefore(dayjs(), "day")))
 
   if (!isValidFromStation || !isValidToStation || dayIsBeforeToday) {
     notFound()
@@ -33,15 +32,11 @@ export default async function Layout({ children, distruptionMessages, trains, pa
       <Navigation />
 
       <ErrorBoundary fallback={<DistruptionMessagesError />}>
-        <Suspense fallback={<DistruptionMessagesLoading />}>
-          {distruptionMessages}
-        </Suspense>
+        <Suspense fallback={<DistruptionMessagesLoading />}>{distruptionMessages}</Suspense>
       </ErrorBoundary>
 
       <ErrorBoundary fallback={<TrainsError />}>
-        <Suspense fallback={<TrainsLoading />}>
-          {trains}
-        </Suspense>
+        <Suspense fallback={<TrainsLoading />}>{trains}</Suspense>
       </ErrorBoundary>
 
       {children}

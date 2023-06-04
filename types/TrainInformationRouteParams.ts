@@ -1,5 +1,5 @@
 export interface TrainInformationRouteParams {
-  from: string;
-  to: string;
-  day: string;
-};
+  from: string
+  to: string
+  day: string
+}

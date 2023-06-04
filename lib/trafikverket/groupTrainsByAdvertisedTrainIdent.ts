@@ -1,7 +1,7 @@
-import { TrainAnnouncement } from "@/types/TrainAnnouncement";
+import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
 export interface IgroupByAdvertisedTrainIdent {
-  [key: string]: TrainAnnouncement[];
+  [key: string]: TrainAnnouncement[]
 }
 
 /**
@@ -9,10 +9,10 @@ export interface IgroupByAdvertisedTrainIdent {
  */
 export function groupByAdvertisedTrainIdent(trains: TrainAnnouncement[]) {
   return trains.reduce<IgroupByAdvertisedTrainIdent>((group, train) => {
-    const { AdvertisedTrainIdent } = train;
-    if (!AdvertisedTrainIdent) return group;
-    group[AdvertisedTrainIdent] = group[AdvertisedTrainIdent] ?? [];
-    group[AdvertisedTrainIdent].push(train);
-    return group;
-  }, {});
+    const { AdvertisedTrainIdent } = train
+    if (!AdvertisedTrainIdent) return group
+    group[AdvertisedTrainIdent] = group[AdvertisedTrainIdent] ?? []
+    group[AdvertisedTrainIdent].push(train)
+    return group
+  }, {})
 }

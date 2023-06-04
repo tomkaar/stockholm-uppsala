@@ -1,5 +1,6 @@
-import { TrainAnnouncement } from "@/types/TrainAnnouncement";
-import dayjs from "dayjs";
+import dayjs from "dayjs"
+
+import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
 export const StationTime = ({ announcement }: { announcement: TrainAnnouncement }) => {
   const isDelayed = !!announcement.EstimatedTimeAtLocation
@@ -8,16 +9,11 @@ export const StationTime = ({ announcement }: { announcement: TrainAnnouncement 
   if (isCanceled) {
     return (
       <span className="text-sm text-slate-500 dark:text-slate-400">
-        <time
-          className="line-through"
-          dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format(
-            "HH:mm"
-          )}
-        >
+        <time className="line-through" dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}>
           {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
         </time>
       </span>
-    );
+    )
   }
 
   if (isDelayed) {
@@ -30,27 +26,18 @@ export const StationTime = ({ announcement }: { announcement: TrainAnnouncement 
           {dayjs(announcement.EstimatedTimeAtLocation).format("HH:mm")}
         </time>
 
-        <time
-          className="line-through"
-          dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format(
-            "HH:mm"
-          )}
-        >
+        <time className="line-through" dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}>
           {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
         </time>
 
-        {announcement.EstimatedTimeIsPreliminary && (
-          <span className="ml-1">Preliminär</span>
-        )}
+        {announcement.EstimatedTimeIsPreliminary && <span className="ml-1">Preliminär</span>}
       </span>
-    );
+    )
   }
 
   return (
     <span className="text-sm text-slate-500 dark:text-slate-400">
-      <time
-        dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
-      >
+      <time dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}>
         {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
       </time>
     </span>

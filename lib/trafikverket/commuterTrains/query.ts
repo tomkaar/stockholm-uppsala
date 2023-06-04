@@ -1,9 +1,9 @@
 export interface IgetTrainsQuery {
-  dateFrom: string;
-  dateTo: string;
-  fromStation: string;
-  toStation: string;
-  trains: string[];
+  dateFrom: string
+  dateTo: string
+  fromStation: string
+  toStation: string
+  trains: string[]
 }
 
 export function getAdvertisedTrainIdentQuery(toStation: string) {
@@ -18,16 +18,10 @@ export function getAdvertisedTrainIdentQuery(toStation: string) {
       </FILTER> 
       <DISTINCT>AdvertisedTrainIdent</DISTINCT>
     </QUERY>
-  `;
+  `
 }
 
-export function getPendeltagQuery({
-  dateFrom,
-  dateTo,
-  fromStation,
-  toStation,
-  trains = [],
-}: IgetTrainsQuery) {
+export function getPendeltagQuery({ dateFrom, dateTo, fromStation, toStation, trains = [] }: IgetTrainsQuery) {
   return `
     <QUERY objecttype="TrainAnnouncement" schemaversion="1.8" orderby="AdvertisedTimeAtLocation">
       <FILTER> 
@@ -80,5 +74,5 @@ export function getPendeltagQuery({
         <INCLUDE>TrainComposition</INCLUDE>
         <INCLUDE>TypeOfTraffic</INCLUDE>
   </QUERY>
-  `;
+  `
 }

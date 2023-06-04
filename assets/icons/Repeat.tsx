@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export const Repeat = () => (
   <svg
@@ -18,4 +18,4 @@ export const Repeat = () => (
     <polyline points="7 23 3 19 7 15" />
     <path d="M21 13v2a4 4 0 0 1-4 4H3" />
   </svg>
-);
+)

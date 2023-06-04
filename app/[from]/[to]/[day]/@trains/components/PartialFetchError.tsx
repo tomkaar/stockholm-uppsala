@@ -1,7 +1,8 @@
 "use client"
 
-import { Refresh } from "@/assets/icons/Refresh";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
+
+import { Refresh } from "@/assets/icons/Refresh"
 
 export function PartialFetchError() {
   const router = useRouter()

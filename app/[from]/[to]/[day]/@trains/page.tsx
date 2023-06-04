@@ -1,19 +1,21 @@
-import dayjs from "dayjs";
-import { getTrains } from "@/lib/trafikverket/train/getTrains";
-import { TrainCard } from "./components/TrainCard/TrainCard";
-import { PreviousTrainsAnnouncements } from "./components/PreviousTrainsAnnouncements";
-import { groupTrainAnnouncements } from "@/utils/groupTrainAnnouncements";
-import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams";
-import { getCommuterTrains } from "@/lib/trafikverket/commuterTrains/getCommuterTrains";
-import getStationName from "@/utils/getStationName";
-import { filterTrains } from "@/utils/filterTrains";
-import { PartialFetchError } from "./components/PartialFetchError";
+import dayjs from "dayjs"
 
-export const revalidate = 10;
+import { getCommuterTrains } from "@/lib/trafikverket/commuterTrains/getCommuterTrains"
+import { getTrains } from "@/lib/trafikverket/train/getTrains"
+import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams"
+import { filterTrains } from "@/utils/filterTrains"
+import getStationName from "@/utils/getStationName"
+import { groupTrainAnnouncements } from "@/utils/groupTrainAnnouncements"
+
+import { PartialFetchError } from "./components/PartialFetchError"
+import { PreviousTrainsAnnouncements } from "./components/PreviousTrainsAnnouncements"
+import { TrainCard } from "./components/TrainCard/TrainCard"
+
+export const revalidate = 10
 
 interface ITrainsPage {
-  params: TrainInformationRouteParams;
-};
+  params: TrainInformationRouteParams
+}
 
 export default async function Home({ params }: ITrainsPage) {
   const fromStation = getStationName(params?.from)
@@ -21,21 +23,18 @@ export default async function Home({ params }: ITrainsPage) {
 
   if (!fromStation || !toStation) return null
 
-  const selectedDay = params?.day ?? dayjs().format("YYYY-MM-DD");
+  const selectedDay = params?.day ?? dayjs().format("YYYY-MM-DD")
 
-  const [
-    { date, trains, error },
-    { trains: commuterTrains, error: commuterTrainsError }
-  ] = await Promise.all([
+  const [{ date, trains, error }, { trains: commuterTrains, error: commuterTrainsError }] = await Promise.all([
     getTrains(fromStation.tåg, toStation.tåg, selectedDay),
-    getCommuterTrains(fromStation.pendeltåg, toStation.pendeltåg, selectedDay)
+    getCommuterTrains(fromStation.pendeltåg, toStation.pendeltåg, selectedDay),
   ])
 
   if (error && commuterTrainsError) {
     throw new Error("Unable to fetch trains")
   }
 
-  const filteredTrains = filterTrains([...trains, ...commuterTrains]);
+  const filteredTrains = filterTrains([...trains, ...commuterTrains])
   const { previousTrains, upcomingTrains } = groupTrainAnnouncements({ trains: filteredTrains, fromStation, toStation })
 
   return (
@@ -45,9 +44,7 @@ export default async function Home({ params }: ITrainsPage) {
           Hämtad: {dayjs(date).format("HH:mm:ss")}
         </div>
 
-        {(error || commuterTrainsError) && (
-          <PartialFetchError />
-        )}
+        {(error || commuterTrainsError) && <PartialFetchError />}
 
         <PreviousTrainsAnnouncements announcements={previousTrains} />
 
@@ -60,5 +57,5 @@ export default async function Home({ params }: ITrainsPage) {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

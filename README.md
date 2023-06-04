@@ -17,7 +17,7 @@ cp .env.local.example .env.local
 ```
 
 Run the the development server:
- 
+
 ```
 pnpm dev
 ```

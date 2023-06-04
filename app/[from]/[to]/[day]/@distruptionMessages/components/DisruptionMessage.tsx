@@ -1,9 +1,10 @@
 "use client"
 
-import { ChevronLeft } from "@/assets/icons/ChevronLeft"
-import { TrainMessage } from "@/types/TrainMessage"
 import dayjs from "dayjs"
 import { useState } from "react"
+
+import { ChevronLeft } from "@/assets/icons/ChevronLeft"
+import { TrainMessage } from "@/types/TrainMessage"
 
 export type TDisruptionMessage = {
   message: TrainMessage
@@ -13,17 +14,18 @@ export const DisruptionMessage = ({ message }: TDisruptionMessage) => {
   const [displayAdditionalInformation, set_displayAdditionalInformation] = useState(false)
 
   const header = message.Header
-  const [subHeader, ...content] = message.ExternalDescription?.split(':') ?? []
+  const [subHeader, ...content] = message.ExternalDescription?.split(":") ?? []
   const subHeaderShouldBeVisible = content.length > 0
 
   return (
-    <div className='flex flex-col items-center border-b border-white/25 dark:border-slate-900/50'>
-      <button className="px-4 py-2 max-w-md w-full flex flex-row justify-between items-center" onClick={() => set_displayAdditionalInformation(prev => !prev)}>
+    <div className="flex flex-col items-center border-b border-white/25 dark:border-slate-900/50">
+      <button
+        className="px-4 py-2 max-w-md w-full flex flex-row justify-between items-center"
+        onClick={() => set_displayAdditionalInformation((prev) => !prev)}
+      >
         <div>
           <h2 className="text-left text-md font-semibold text-gray-900">{header}</h2>
-          {subHeaderShouldBeVisible && (
-            <p className="text-left text-sm text-gray-900">{subHeader}</p>
-          )}
+          {subHeaderShouldBeVisible && <p className="text-left text-sm text-gray-900">{subHeader}</p>}
         </div>
         <div className="rotate-[-90deg]">
           <ChevronLeft />
@@ -41,7 +43,7 @@ export const DisruptionMessage = ({ message }: TDisruptionMessage) => {
             </p>
 
             <p className="mb-2 text-left text-sm text-gray-900">
-              {subHeaderShouldBeVisible ? content.join(':') : subHeader}
+              {subHeaderShouldBeVisible ? content.join(":") : subHeader}
             </p>
 
             <p className="text-left text-sm text-gray-900">

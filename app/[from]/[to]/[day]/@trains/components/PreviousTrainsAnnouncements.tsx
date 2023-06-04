@@ -1,7 +1,9 @@
 "use client"
 
-import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 import { useState } from "react"
+
+import { TrainAnnouncement } from "@/types/TrainAnnouncement"
+
 import { TrainCard } from "./TrainCard/TrainCard"
 
 export interface IPreviousTrainsAnnouncements {
@@ -20,15 +22,15 @@ export const PreviousTrainsAnnouncements = ({ announcements }: IPreviousTrainsAn
       {!!announcements?.length && (
         <>
           <button
-            className='mb-4 text-base text-slate-900/50 dark:text-slate-300/75'
-            onClick={() => set_displayPreviousTrains(prev => !prev)}
+            className="mb-4 text-base text-slate-900/50 dark:text-slate-300/75"
+            onClick={() => set_displayPreviousTrains((prev) => !prev)}
           >
             {displayPreviousTrains ? "Göm tidigare avgångar" : "Se tidigare avgångar"}
           </button>
 
           {displayPreviousTrains && (
             <>
-              {announcements?.map(announcement => (
+              {announcements?.map((announcement) => (
                 <TrainCard
                   key={announcement.AdvertisedTrainIdent}
                   departure={announcement.departure}

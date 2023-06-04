@@ -1,18 +1,12 @@
-'use client'
+"use client"
+
+import { Dialog } from "@headlessui/react"
+import { useState } from "react"
 
 import { HelpCircle } from "@/assets/icons/HelpCircle"
-import { stationStockholm, stationUppsala } from "@/constants/stations"
-
-import { Dialog } from '@headlessui/react'
-import { useState } from "react"
 import { Button } from "@/components/Button"
 
-export interface IFAQ {
-  from?: string
-  to?: string
-}
-
-export const FAQ = ({ from = stationStockholm, to = stationUppsala }: IFAQ) => {
+export const FAQ = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -25,8 +19,11 @@ export const FAQ = ({ from = stationStockholm, to = stationUppsala }: IFAQ) => {
         <HelpCircle width={20} height={20} />
       </button>
 
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="fixed z-30 top-0 left-0 right-0 bottom-0 flex min-h-full items-center justify-center p-4 text-center">
-
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="fixed z-30 top-0 left-0 right-0 bottom-0 flex min-h-full items-center justify-center p-4 text-center"
+      >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
         <Dialog.Panel className="flex flex-col w-full max-w-md max-h-full overflow-scroll transform rounded-2xl bg-white dark:bg-slate-800 p-6 text-left align-middle shadow-xl transition-all opacity-100 scale-100">
@@ -41,12 +38,13 @@ export const FAQ = ({ from = stationStockholm, to = stationUppsala }: IFAQ) => {
               </Dialog.Title>
 
               <Dialog.Description className="text-sm text-slate-500 dark:text-slate-300">
-                Vi hämtar tåg som går mellan Stockholm och Uppsala och filtrerar sedan ut tåg där Movingo biljetten inte gäller.
+                Vi hämtar tåg som går mellan Stockholm och Uppsala och filtrerar sedan ut tåg där Movingo biljetten inte
+                gäller.
               </Dialog.Description>
-                
+
               <ul className="list-disc pl-4 mt-2 text-sm text-slate-500 dark:text-slate-300">
-                <li>Tåg med notifieringen "Movingo gäller ej." visas ej.</li>
-                <li>Tåg med notifieringen "Endast SJ-biljetter gäller." visas ej.</li>
+                <li>Tåg med notifieringen &quot;Movingo gäller ej.&quot; visas ej.</li>
+                <li>Tåg med notifieringen &quot;Endast SJ-biljetter gäller.&quot; visas ej.</li>
                 <li>SJ InterCity tåg visas ej.</li>
               </ul>
             </div>
@@ -57,7 +55,8 @@ export const FAQ = ({ from = stationStockholm, to = stationUppsala }: IFAQ) => {
               </Dialog.Title>
 
               <Dialog.Description className="text-sm text-slate-500 dark:text-slate-300">
-                Alla trafikmeddelanden för den station du åker från visas fram till och med den dagen de är planerade att vara lösta.
+                Alla trafikmeddelanden för den station du åker från visas fram till och med den dagen de är planerade
+                att vara lösta.
               </Dialog.Description>
             </div>
 
@@ -67,8 +66,9 @@ export const FAQ = ({ from = stationStockholm, to = stationUppsala }: IFAQ) => {
               </Dialog.Title>
 
               <Dialog.Description className="text-sm text-slate-500 dark:text-slate-300">
-                All information kommer från <a href="https://api.trafikinfo.trafikverket.se/">Trafikverkets Öppna API</a>.
-                De enda filtreringarna eller ändringar gjorta är de som nämnt ovan.
+                All information kommer från{" "}
+                <a href="https://api.trafikinfo.trafikverket.se/">Trafikverkets Öppna API</a>. De enda filtreringarna
+                eller ändringar gjorta är de som nämnt ovan.
               </Dialog.Description>
             </div>
           </div>

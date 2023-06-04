@@ -16,5 +16,5 @@ export function fetchFromTrafikverket(query: string) {
         ${query}
       </REQUEST>
     `,
-  });
+  })
 }

@@ -1,7 +1,8 @@
-'use client'
+"use client"
+
+import { usePathname } from "next/navigation"
 
 import { stationStockholm, stationUppsala } from "@/constants/stations"
-import { usePathname } from "next/navigation"
 
 import { FAQ } from "./FAQ"
 
@@ -26,7 +27,7 @@ export const Header = () => {
         {toStationName}
       </h1>
 
-      <FAQ from={from} to={to} />
+      <FAQ />
     </header>
   )
 }

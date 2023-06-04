@@ -1,6 +1,8 @@
+import { NextResponse } from "next/server"
+
 import { TrainAnnouncementResponse } from "@/types/Response"
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
-import { NextResponse } from "next/server"
+
 import { stations } from "../../data/stations"
 
 export const GET = async (request: Request) => {
@@ -10,15 +12,15 @@ export const GET = async (request: Request) => {
   const operationalTrainNumber = SearchParams.get("operationalTrainNumber")
 
   const response = await fetch("https://api.trafikinfo.trafikverket.se/v2/data.json", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/xml",
-        Accept: "application/json",
-      },
-      next: {
-        revalidate: 10,
-      },
-      body: `
+    method: "POST",
+    headers: {
+      "Content-Type": "application/xml",
+      Accept: "application/json",
+    },
+    next: {
+      revalidate: 10,
+    },
+    body: `
       <REQUEST>
         <LOGIN authenticationkey='${process.env.AUTH_KEY}' />
           <QUERY objecttype='TrainAnnouncement' orderby='AdvertisedTimeAtLocation' schemaversion='1.8'>
@@ -44,7 +46,7 @@ export const GET = async (request: Request) => {
         </QUERY>
       </REQUEST>
     `,
-    })
+  })
 
   if (!response.ok) {
     console.error(response)
@@ -55,23 +57,23 @@ export const GET = async (request: Request) => {
 
   const trainAnnouncement = result.RESPONSE.RESULT[0].TrainAnnouncement ?? []
 
-  const groupedByStation = trainAnnouncement.reduce<IGroupedByStationObject>(
-    (acc, cur) => {
-      const station = cur.LocationSignature ?? ""
-      const name = stations.find(station => station.LocationSignature === cur.LocationSignature)?.AdvertisedLocationName ?? cur.LocationSignature ?? ""
-      const ankomst = cur.ActivityType === "Ankomst"
+  const groupedByStation = trainAnnouncement.reduce<IGroupedByStationObject>((acc, cur) => {
+    const station = cur.LocationSignature ?? ""
+    const name =
+      stations.find((station) => station.LocationSignature === cur.LocationSignature)?.AdvertisedLocationName ??
+      cur.LocationSignature ??
+      ""
+    const ankomst = cur.ActivityType === "Ankomst"
 
-      acc[station] = { ...acc[station] }
-      acc[station]["station"] = station
-      acc[station]["namn"] = name
+    acc[station] = { ...acc[station] }
+    acc[station]["station"] = station
+    acc[station]["namn"] = name
 
-      if (ankomst) acc[station]["ankomst"] = cur
-      else acc[station]["avgang"] = cur
+    if (ankomst) acc[station]["ankomst"] = cur
+    else acc[station]["avgang"] = cur
 
-      return acc
-    },
-    {}
-  )
+    return acc
+  }, {})
 
   const groupedStationArray = Object.values(groupedByStation)
 

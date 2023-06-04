@@ -1,30 +1,36 @@
-"use client";
+"use client"
 
-import { Malartag, SJRegional, codeCancelled } from "@/constants/codes";
-import { TrainAnnouncement } from "@/types/TrainAnnouncement";
-import { useState } from "react";
-import { AdditionalInformation } from "./TrainCard.AdditionalInformation";
-import { Time } from "./TrainCard.Time";
+import { useState } from "react"
+
+import { codeCancelled, Malartag, SJRegional } from "@/constants/codes"
+import { TrainAnnouncement } from "@/types/TrainAnnouncement"
+
+import { AdditionalInformation } from "./TrainCard.AdditionalInformation"
+import { Time } from "./TrainCard.Time"
 
 export type TTrainCard = {
-  departure: TrainAnnouncement;
-  arrival?: TrainAnnouncement;
-  isDisabled?: boolean;
-};
+  departure: TrainAnnouncement
+  arrival?: TrainAnnouncement
+  isDisabled?: boolean
+}
 
 export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
-  const [displayAdditionalInformation, set_displayAdditionalInformation] = useState(false);
+  const [displayAdditionalInformation, set_displayAdditionalInformation] = useState(false)
 
-  const isPendelTag = !!departure?.TypeOfTraffic?.find(traffic => traffic.Description === "Pendeltåg") 
-  const isMalartag = departure?.ProductInformation?.find(info => info.Code === Malartag);
-  const isSJRegional = departure?.ProductInformation?.find(info => info.Code === SJRegional);
+  const isPendelTag = !!departure?.TypeOfTraffic?.find((traffic) => traffic.Description === "Pendeltåg")
+  const isMalartag = departure?.ProductInformation?.find((info) => info.Code === Malartag)
+  const isSJRegional = departure?.ProductInformation?.find((info) => info.Code === SJRegional)
 
-  const isCanceled = departure.Canceled || departure.Deviation?.some(deviation => deviation.Code === codeCancelled)
-  const hasDepartured = departure.TimeAtLocation;
-  const hasDeviations = !!departure.Deviation?.length;
+  const isCanceled = departure.Canceled || departure.Deviation?.some((deviation) => deviation.Code === codeCancelled)
+  const hasDepartured = departure.TimeAtLocation
+  const hasDeviations = !!departure.Deviation?.length
 
   return (
-    <div className={`bg-slate-50 dark:bg-slate-800 ${isCanceled || hasDepartured || isDisabled ? "opacity-50" : ""} rounded-lg`}>
+    <div
+      className={`bg-slate-50 dark:bg-slate-800 ${
+        isCanceled || hasDepartured || isDisabled ? "opacity-50" : ""
+      } rounded-lg`}
+    >
       <button
         className="text-left w-full p-2 flex flex-row justify-between"
         onClick={() => set_displayAdditionalInformation((prev) => !prev)}
@@ -38,21 +44,16 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
 
           <div className="flex flex-col">
             <strong className="text-base text-slate-900 font-semibold dark:text-slate-300">
-              {departure.ProductInformation?.map((p) => p.Description).join(
-                " "
-              ) ?? ""}
-              <span className="text-slate-700 dark:text-slate-400 font-normal">
-                {" "}
-                {departure.AdvertisedTrainIdent}
-              </span>
+              {departure.ProductInformation?.map((p) => p.Description).join(" ") ?? ""}
+              <span className="text-slate-700 dark:text-slate-400 font-normal"> {departure.AdvertisedTrainIdent}</span>
             </strong>
 
             <div>
               <Time announcement={departure} />
               {arrival && (
                 <>
-                <span className="text-sm text-slate-500 dark:text-slate-400">{" - "}</span>
-                <Time announcement={arrival} displayCancelled={false} displayLeftStation={false} />
+                  <span className="text-sm text-slate-500 dark:text-slate-400">{" - "}</span>
+                  <Time announcement={arrival} displayCancelled={false} displayLeftStation={false} />
                 </>
               )}
             </div>
@@ -67,14 +68,12 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
           </div>
         </div>
 
-        <span className="text-sm text-slate-500 dark:text-slate-400">
-          Spår: {departure.TrackAtLocation}
-        </span>
+        <span className="text-sm text-slate-500 dark:text-slate-400">Spår: {departure.TrackAtLocation}</span>
       </button>
 
       {displayAdditionalInformation && (
         <div className="space-y-4 p-4 border-t border-slate-900/10 dark:border-slate-700">
-          {((departure.OtherInformation?.length ?? 0) === 0 && (departure.Booking?.length ?? 0 === 0)) ? (
+          {(departure.OtherInformation?.length ?? 0) === 0 && (departure.Booking?.length ?? 0 === 0) ? (
             <p className="text-sm text-slate-900 dark:text-slate-300">Ingen ytterligare information</p>
           ) : (
             <ul className="text-sm text-slate-900 dark:text-slate-300">
@@ -95,5 +94,5 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
