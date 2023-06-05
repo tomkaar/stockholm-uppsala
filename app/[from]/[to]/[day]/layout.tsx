@@ -9,6 +9,7 @@ import DistruptionMessagesError from "./@distruptionMessages/error"
 import DistruptionMessagesLoading from "./@distruptionMessages/loading"
 import TrainsError from "./@trains/error"
 import TrainsLoading from "./@trains/loading"
+import { Header } from "./components/Header"
 import { Navigation } from "./components/Navigation"
 
 export interface ILayout {
@@ -29,6 +30,7 @@ export default async function Layout({ children, distruptionMessages, trains, pa
 
   return (
     <>
+      <Header from={params.from} to={params.to} />
       <Navigation />
 
       <ErrorBoundary fallback={<DistruptionMessagesError />}>

@@ -3,8 +3,6 @@ import "@/init/dayjs"
 
 import { Metadata } from "next"
 
-import { Header } from "./[from]/[to]/[day]/components/Header"
-
 interface IRootLayout {
   children: React.ReactNode
 }
@@ -19,11 +17,7 @@ const RootLayout = ({ children }: IRootLayout) => (
   <html lang="sv">
     <link rel="manifest" href="/manifest.json" />
 
-    <body className="bg-white dark:bg-slate-900">
-      <Header />
-
-      {children}
-    </body>
+    <body className="bg-white dark:bg-slate-900">{children}</body>
   </html>
 )
 
