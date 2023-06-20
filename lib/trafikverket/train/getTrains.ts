@@ -1,6 +1,7 @@
-import dayjs from "dayjs"
+import { Dayjs } from "dayjs"
 
 import { stationStockholm, stationUppsala } from "@/constants/stations"
+import dayjs from "@/init/dayjs"
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
 import { fetchFromTrafikverket } from "../fetchFromTrafikverket"
@@ -26,12 +27,12 @@ export const getTrains = async (
   const response = await fetchFromTrafikverket(getTrainsQuery({ dateFrom, dateTo, fromStation, toStation }))
     .then((res) => res.json())
     .then((data) => data.RESPONSE.RESULT[0].TrainAnnouncement ?? [])
-    .then((data) => ({ data, date: new Date(), error: false }))
-    .catch(() => ({ data: [], date: new Date(), error: true }))
+    .then((data) => ({ data, date: dayjs(), error: false }))
+    .catch(() => ({ data: [], date: dayjs(), error: true }))
 
   const { data, date, error } = response as {
     data: TrainAnnouncement[]
-    date: Date
+    date: Dayjs
     error: boolean
   }
 

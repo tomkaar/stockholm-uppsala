@@ -1,5 +1,4 @@
-import dayjs from "dayjs"
-
+import dayjs from "@/init/dayjs"
 import { getCommuterTrains } from "@/lib/trafikverket/commuterTrains/getCommuterTrains"
 import { getTrains } from "@/lib/trafikverket/train/getTrains"
 import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams"
