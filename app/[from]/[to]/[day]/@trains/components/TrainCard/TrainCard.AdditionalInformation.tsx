@@ -32,7 +32,8 @@ export const AdditionalInformation = ({
   const toStation = isPendelTag ? getStationName(to)?.pendeltåg : getStationName(to)?.tåg
 
   const { mutate } = useSWRConfig()
-  const URL = `/api/train?operationalTrainNumber=${operationalTrainNumber}&scheduledDepartureDateTime=${scheduledDepartureDateTime}`
+  const searchParams = new URLSearchParams({ operationalTrainNumber, scheduledDepartureDateTime }).toString()
+  const URL = "/api/train?" + searchParams
   const { data, error, isLoading } = useSWR<{ stations: IGroupedByStation[]; date: Date }>(URL, fetcher)
   const { stations, date } = data ?? {}
 
