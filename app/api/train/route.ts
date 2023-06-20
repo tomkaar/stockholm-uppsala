@@ -10,6 +10,7 @@ export const GET = async (request: Request) => {
   const SearchParams = new URLSearchParams(url.searchParams)
 
   const operationalTrainNumber = SearchParams.get("operationalTrainNumber")
+  const scheduledDepartureDateTime = SearchParams.get("scheduledDepartureDateTime")
 
   const response = await fetch("https://api.trafikinfo.trafikverket.se/v2/data.json", {
     method: "POST",
@@ -28,6 +29,7 @@ export const GET = async (request: Request) => {
               <AND>
                 <EQ name="Advertised" value="true" />
                 <EQ name="OperationalTrainNumber" value="${operationalTrainNumber}" />
+                <EQ name="ScheduledDepartureDateTime" value="${scheduledDepartureDateTime}" />
               </AND>
             </FILTER>
 
