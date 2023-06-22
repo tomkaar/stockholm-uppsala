@@ -1,4 +1,3 @@
-import dayjs from "dayjs"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
@@ -22,9 +21,8 @@ export interface ILayout {
 export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
   const isValidFromStation = ["Uppsala", "Stockholm"].includes(params.from)
   const isValidToStation = ["Uppsala", "Stockholm"].includes(params.to)
-  const dayIsBeforeToday = await new Promise<boolean>((res) => res(dayjs(params.day).isBefore(dayjs(), "day")))
 
-  if (!isValidFromStation || !isValidToStation || dayIsBeforeToday) {
+  if (!isValidFromStation || !isValidToStation) {
     notFound()
   }
 
