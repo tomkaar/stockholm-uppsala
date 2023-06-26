@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { Metadata } from "next"
 
-import { ChevronRight } from "@/assets/icons/ChevronRight"
+import { Chevron } from "@/assets/icons/Chevron"
 import { LinkButton } from "@/components/LinkButton"
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ async function Home() {
         <LinkButton prefetch={false} href={`/Stockholm/Uppsala/${today}`}>
           <span className="font-semibold">Stockholm</span>
           &nbsp;
-          <ChevronRight width="16" height="16" />
+          <Chevron width={16} height={16} className="rotate-90" />
           &nbsp;
           <span className="font-semibold">Uppsala</span>
         </LinkButton>
@@ -37,7 +37,7 @@ async function Home() {
         <LinkButton prefetch={false} href={`/Uppsala/Stockholm/${today}`}>
           <span className="font-semibold">Uppsala</span>
           &nbsp;
-          <ChevronRight width="16" height="16" />
+          <Chevron width={16} height={16} className="rotate-90" />
           &nbsp;
           <span className="font-semibold">Stockholm</span>
         </LinkButton>

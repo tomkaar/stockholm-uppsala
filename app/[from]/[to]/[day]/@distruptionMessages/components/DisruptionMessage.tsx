@@ -3,7 +3,7 @@
 import dayjs from "dayjs"
 import { useState } from "react"
 
-import { ChevronLeft } from "@/assets/icons/ChevronLeft"
+import { Chevron } from "@/assets/icons/Chevron"
 import { TrainMessage } from "@/types/TrainMessage"
 
 export type TDisruptionMessage = {
@@ -28,7 +28,7 @@ export const DisruptionMessage = ({ message }: TDisruptionMessage) => {
           {subHeaderShouldBeVisible && <p className="text-left text-sm text-gray-900">{subHeader}</p>}
         </div>
         <div className="rotate-[-90deg]">
-          <ChevronLeft />
+          <Chevron width={18} height={18} />
         </div>
       </button>
 

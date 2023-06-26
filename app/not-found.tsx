@@ -4,7 +4,7 @@ import dayjs from "dayjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { ChevronRight } from "@/assets/icons/ChevronRight"
+import { Chevron } from "@/assets/icons/Chevron"
 import { stationStockholm, stationUppsala } from "@/constants/stations"
 
 export const NotFound = () => {
@@ -40,7 +40,7 @@ export const NotFound = () => {
           >
             Dagens tidtabell
             <div className="ml-1">
-              <ChevronRight width="20" height="20" />
+              <Chevron width={20} height={20} className="rotate-90" />
             </div>
           </Link>
         </div>
