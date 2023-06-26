@@ -1,22 +1,44 @@
 "use client"
 
 import { Dialog } from "@headlessui/react"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { HelpCircle } from "@/assets/icons/HelpCircle"
 import { Button } from "@/components/Button"
 
 export const FAQ = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [displayPulse, setDisplayPulse] = useState(false)
+
+  const handleOpenDialog = useCallback(() => {
+    setIsOpen(true)
+    setDisplayPulse(false)
+    localStorage?.setItem("openedFAQ", "true")
+  }, [])
+
+  useEffect(() => {
+    const value = localStorage?.getItem("openedFAQ")
+    if (value) {
+      setDisplayPulse(value === "true" ? false : true)
+      return
+    }
+    setDisplayPulse(true)
+  }, [])
 
   return (
     <>
       <button
         aria-label="Vanliga frågor"
-        onClick={() => setIsOpen(true)}
-        className="ml-1 text-slate-900 dark:text-white text-xl tracking-light text-center font-bold"
+        onClick={handleOpenDialog}
+        className="relative ml-1 text-slate-900 dark:text-white text-xl tracking-light text-center font-bold"
       >
-        <HelpCircle width={20} height={20} />
+        {displayPulse && (
+          <>
+            <span className="absolute top-0 right-0 animate-ping w-1.5 h-1.5 bg-emerald-600 rounded-full" />
+            <span className="absolute top-0 right-0 w-1.5 h-1.5 bg-emerald-600 rounded-full" />
+          </>
+        )}
+        <HelpCircle width={24} height={24} />
       </button>
 
       <Dialog
@@ -47,6 +69,27 @@ export const FAQ = () => {
                 <li>Tåg med notifieringen &quot;Endast SJ-biljetter gäller.&quot; visas ej.</li>
                 <li>SJ InterCity tåg visas ej.</li>
               </ul>
+            </div>
+
+            <div>
+              <Dialog.Title as="h3" className="text-sm font-medium leading-6 text-slate-900 dark:text-slate-50">
+                Movingo 5/30 Biljett
+              </Dialog.Title>
+
+              <Dialog.Description className="text-sm text-slate-500 dark:text-slate-300">
+                Det gäller olika regler för een Periodbiljett och en Movingo 5/30 biljett. Här visas tåg som är gilltiga
+                för Periodbiljett.
+                <br />
+                Se mer på{" "}
+                <a
+                  className="text-sky-800 font-semibold"
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://www.movingobiljett.se/"
+                >
+                  movingobiljett.se
+                </a>
+              </Dialog.Description>
             </div>
 
             <div>
