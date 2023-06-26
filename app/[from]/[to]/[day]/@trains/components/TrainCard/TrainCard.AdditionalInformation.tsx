@@ -4,7 +4,7 @@ import { useState } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 import { IGroupedByStation } from "@/app/api/train/route"
-import { Refresh } from "@/assets/icons/Refresh"
+import { ArrowsRound } from "@/assets/icons/ArrowsRound"
 import getStationName from "@/utils/getStationName"
 
 import { Station } from "./TrainCard.Station"
@@ -86,7 +86,7 @@ export const AdditionalInformation = ({
           onClick={() => mutate(URL)}
           className="flex flex-row justify-center items-center rounded-full p-1 w-8 h-8 bg-slate-300 dark:db-slate-800"
         >
-          <Refresh width={16} height={16} />
+          <ArrowsRound width={20} height={20} className="rotate-90" />
         </button>
       </div>
     )
