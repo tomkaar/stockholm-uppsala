@@ -27,7 +27,7 @@ export const DisruptionMessage = ({ message }: TDisruptionMessage) => {
           <h2 className="text-left text-md font-semibold text-gray-900">{header}</h2>
           {subHeaderShouldBeVisible && <p className="text-left text-sm text-gray-900">{subHeader}</p>}
         </div>
-        <div className="rotate-[-90deg]">
+        <div className={`${displayAdditionalInformation ? "" : "rotate-[180deg]"}`}>
           <Chevron width={18} height={18} />
         </div>
       </button>
