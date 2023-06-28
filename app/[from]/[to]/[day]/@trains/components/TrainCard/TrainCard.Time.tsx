@@ -41,7 +41,7 @@ export const Time = ({ announcement, displayLeftStation = true, displayCancelled
           {formatHHmm(announcement.AdvertisedTimeAtLocation)}
         </time>
 
-        {announcement.EstimatedTimeIsPreliminary && <span className="ml-1">Preliminär</span>}
+        {announcement.EstimatedTimeIsPreliminary && <span className="ml-1">Prel.</span>}
       </span>
     )
   }

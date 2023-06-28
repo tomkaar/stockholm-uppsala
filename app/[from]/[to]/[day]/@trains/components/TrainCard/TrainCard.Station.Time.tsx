@@ -29,8 +29,6 @@ export const StationTime = ({ announcement }: { announcement: TrainAnnouncement 
         <time className="line-through" dateTime={dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}>
           {dayjs(announcement.AdvertisedTimeAtLocation).format("HH:mm")}
         </time>
-
-        {announcement.EstimatedTimeIsPreliminary && <span className="ml-1">Preliminär</span>}
       </span>
     )
   }
