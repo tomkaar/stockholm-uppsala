@@ -12,9 +12,9 @@ export const SwitchDestinationButton = () => {
       prefetch={false}
       aria-label="Byt håll"
       href={`/${to}/${from}/${day}`}
-      className="fixed bottom-4 right-4 bg-emerald-500 dark:bg-emerald-700 p-2 rounded-full text-white"
+      className="fixed bottom-4 right-4 bg-emerald-500 dark:bg-emerald-700 p-2.5 rounded-full text-white"
     >
-      <ArrowsExchange width={32} height={32} className="rotate-90" />
+      <ArrowsExchange width={36} height={36} className="rotate-90" />
     </Link>
   )
 }
