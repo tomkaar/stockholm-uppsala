@@ -12,7 +12,7 @@ export interface IHeader {
 export function Header({ from, to }: IHeader) {
   return (
     <header className="sticky top-0 z-20 flex flex-row justify-center items-center py-4 px-4 bg-white dark:bg-slate-900 border-b border-slate-900/10 dark:border-slate-700">
-      <Link href="/" className="-rotate-90 text-slate-900">
+      <Link href="/" className="-rotate-90 text-slate-900 dark:text-white">
         <Chevron width={20} height={20} />
       </Link>
 
