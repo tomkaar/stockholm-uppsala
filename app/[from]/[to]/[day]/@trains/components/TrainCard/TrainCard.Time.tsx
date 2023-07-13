@@ -40,8 +40,6 @@ export const Time = ({ announcement, displayLeftStation = true, displayCancelled
         <time className="line-through" dateTime={formatHHmm(announcement.AdvertisedTimeAtLocation)}>
           {formatHHmm(announcement.AdvertisedTimeAtLocation)}
         </time>
-
-        {announcement.EstimatedTimeIsPreliminary && <span className="ml-1">Prel.</span>}
       </span>
     )
   }

@@ -48,13 +48,20 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
               <span className="text-slate-700 dark:text-slate-400 font-normal"> {departure.AdvertisedTrainIdent}</span>
             </strong>
 
-            <div>
-              <Time announcement={departure} />
+            <div className="flex gap-2 items-start mt-0.5">
+              <div className="flex flex-col justify-end">
+                <Time announcement={departure} />
+                {departure?.EstimatedTimeIsPreliminary && (
+                  <div className="mb-0.5 text-xs text-slate-500 dark:text-slate-400">Preliminär tid</div>
+                )}
+              </div>
               {arrival && (
-                <>
-                  <span className="text-sm text-slate-500 dark:text-slate-400">{" - "}</span>
-                  <Time announcement={arrival} displayCancelled={false} displayLeftStation={false} />
-                </>
+                <div className="flex flex-col justify-end">
+                  <Time announcement={arrival} displayCancelled={false} />
+                  {arrival?.EstimatedTimeIsPreliminary && (
+                    <div className="mb-0.5 text-xs text-slate-500 dark:text-slate-400">Preliminär tid</div>
+                  )}
+                </div>
               )}
             </div>
 
