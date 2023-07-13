@@ -10,9 +10,8 @@ export interface IStation {
 }
 
 export const Station = ({ station, isLast, isLoading }: IStation) => {
-  const isDelayed = !!station?.ankomst?.EstimatedTimeAtLocation || !!station?.avgang?.EstimatedTimeAtLocation
   const isCanceled = station?.ankomst?.Canceled || station?.avgang?.Canceled
-  const hasDepartured = station?.ankomst?.TimeAtLocation || station?.avgang?.TimeAtLocation
+  const hasDepartured = station?.avgang ? station?.avgang?.TimeAtLocation : station?.ankomst?.TimeAtLocation
 
   return (
     <div className={`relative flex flex-row gap-4 ${isLoading ? "animate-pulse" : ""}`}>
@@ -68,19 +67,14 @@ export const Station = ({ station, isLast, isLoading }: IStation) => {
           </div>
 
           <div>
-            {hasDepartured && (
-              <div className="text-sm text-right text-slate-500 dark:text-slate-400">Lämnat stationen</div>
-            )}
-            {isCanceled && (
-              <div className={`${isDelayed || isCanceled ? " text-right text-rose-500 dark:text-rose-500" : ""}`}>
-                Installt
+            {isCanceled || hasDepartured ? (
+              <div className="mb-1">
+                {isCanceled && <div className="text-rose-500">Inställt</div>}
+                {hasDepartured && (
+                  <div className="text-xs dark:bg-green-600 py-0.5 px-2 rounded-lg text-white">Lämnat stationen</div>
+                )}
               </div>
-            )}
-            {isDelayed && (
-              <div className={`${isDelayed || isCanceled ? " text-right text-rose-500 dark:text-rose-500" : ""}`}>
-                Försenad
-              </div>
-            )}
+            ) : null}
             {(station?.ankomst?.TrackAtLocation || station?.avgang?.TrackAtLocation) && (
               <div className="text-sm text-right text-slate-500 dark:text-slate-400">
                 Spår: {station?.ankomst?.TrackAtLocation || station?.avgang?.TrackAtLocation}

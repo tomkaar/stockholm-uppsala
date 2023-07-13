@@ -4,14 +4,12 @@ import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
 type TTime = {
   announcement: TrainAnnouncement
-  displayLeftStation?: boolean
   displayCancelled?: boolean
 }
 
-export const Time = ({ announcement, displayLeftStation = true, displayCancelled = true }: TTime) => {
+export const Time = ({ announcement, displayCancelled = true }: TTime) => {
   const isDelayed = !!announcement.EstimatedTimeAtLocation
   const isCanceled = announcement.Canceled
-  const hasDepartured = announcement.TimeAtLocation
 
   if (isCanceled && displayCancelled) {
     return (
@@ -28,8 +26,6 @@ export const Time = ({ announcement, displayLeftStation = true, displayCancelled
   if (isDelayed) {
     return (
       <span className="text-sm text-slate-500 dark:text-slate-400">
-        {hasDepartured && displayLeftStation && <span className="mr-1">Lämnat stationen:</span>}
-
         <time
           className="rounded-md px-1 py-0.5 text-white bg-rose-500 dark:bg-rose-500 mr-2 font-bold"
           dateTime={formatHHmm(announcement.EstimatedTimeAtLocation)}
@@ -46,8 +42,6 @@ export const Time = ({ announcement, displayLeftStation = true, displayCancelled
 
   return (
     <span className="text-sm text-slate-500 dark:text-slate-400">
-      {hasDepartured && displayLeftStation && <span className="mr-1">Lämnade stationen:</span>}
-
       <time dateTime={formatHHmm(announcement.AdvertisedTimeAtLocation)}>
         {formatHHmm(announcement.AdvertisedTimeAtLocation)}
       </time>
