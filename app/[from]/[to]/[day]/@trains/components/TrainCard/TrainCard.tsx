@@ -72,9 +72,11 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
             </div>
 
             {hasDeviations && (
-              <ul className="text-sm text-orage-600 dark:text-orange-500">
+              <ul className="mt-1">
                 {departure.Deviation?.map((deviation) => (
-                  <li key={deviation.Code}>{deviation.Description}</li>
+                  <li className="text-xs text-orange-600 dark:text-orange-500" key={deviation.Code}>
+                    {deviation.Description}
+                  </li>
                 ))}
               </ul>
             )}
