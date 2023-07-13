@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 
+import { Arrow } from "@/assets/icons/Arrow"
 import { codeCancelled, Malartag, SJRegional } from "@/constants/codes"
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
@@ -55,6 +56,11 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
                   <div className="mb-0.5 text-xs text-slate-500 dark:text-slate-400">Preliminär tid</div>
                 )}
               </div>
+
+              {arrival && (
+                <Arrow width={16} height={16} className="rotate-90 text-slate-500 dark:text-slate-400 mt-0.5" />
+              )}
+
               {arrival && (
                 <div className="flex flex-col justify-end">
                   <Time announcement={arrival} displayCancelled={false} />
