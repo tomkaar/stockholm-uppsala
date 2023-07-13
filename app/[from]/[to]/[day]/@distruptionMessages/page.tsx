@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 
-import { getTrainMessages } from "@/lib/trafikverket/trainMessages/getTrainMessages"
+import { getDistruptionMessages } from "@/lib/trafikverket/distruptionMessages/getDistruptionMessages"
 import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams"
 import getStationName from "@/utils/getStationName"
 
@@ -14,7 +14,7 @@ export default async function DistruptionMessages({ params }: IDistruptionMessag
   const fromStation = getStationName(params?.from)
   const day = params.day ?? dayjs()
   if (!fromStation) return null
-  const messages = await getTrainMessages(fromStation.tåg)
+  const messages = await getDistruptionMessages(fromStation.tåg)
 
   const visibleMessages = messages?.filter((message) => {
     const hasBeenResolvedOnThisDay =

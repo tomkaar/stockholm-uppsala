@@ -2,10 +2,10 @@ import { stationStockholm } from "@/constants/stations"
 import { TrainMessageResponse } from "@/types/Response"
 
 import { fetchFromTrafikverket } from "../fetchFromTrafikverket"
-import { getTrainMessagesQuery } from "./query"
+import { getDistruptionMessagesQuery } from "./query"
 
-export const getTrainMessages = async (station: string = stationStockholm) => {
-  const response = await fetchFromTrafikverket(getTrainMessagesQuery({ station }))
+export const getDistruptionMessages = async (station: string = stationStockholm) => {
+  const response = await fetchFromTrafikverket(getDistruptionMessagesQuery({ station }))
 
   if (!response.ok) {
     throw new Error("Kunde inte hämta meddelanden")

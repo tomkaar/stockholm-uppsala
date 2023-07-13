@@ -1,8 +1,8 @@
-export interface IgetTrainMessagesQuery {
+export interface GetDistruptionMessagesQuery {
   station: string
 }
 
-export function getTrainMessagesQuery({ station }: IgetTrainMessagesQuery) {
+export function getDistruptionMessagesQuery({ station }: GetDistruptionMessagesQuery) {
   return `
     <QUERY objecttype='TrainMessage' schemaversion='1.7'>
       <FILTER>
