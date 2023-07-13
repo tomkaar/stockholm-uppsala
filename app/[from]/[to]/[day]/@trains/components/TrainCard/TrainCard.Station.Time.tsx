@@ -3,7 +3,9 @@ import dayjs from "dayjs"
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
 export const StationTime = ({ announcement }: { announcement: TrainAnnouncement }) => {
-  const isDelayed = !!announcement.EstimatedTimeAtLocation
+  const isDelayed =
+    !!announcement.EstimatedTimeAtLocation &&
+    dayjs(announcement.EstimatedTimeAtLocation).isAfter(dayjs(announcement.AdvertisedTimeAtLocation), "minute")
   const isCanceled = announcement.Canceled
 
   if (isCanceled) {
