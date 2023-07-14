@@ -1,12 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 
 import { Arrow } from "@/assets/icons/Arrow"
 import { codeCancelled, Malartag, SJRegional } from "@/constants/codes"
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
 
-import { AdditionalInformation } from "./TrainCard.AdditionalInformation"
+import { AdditionalInformation } from "./AdditionalInformation/AdditionalInformation"
+import { ErrorBoundary } from "./AdditionalInformation/Error"
+import { Loading } from "./AdditionalInformation/Loading"
 import { Time } from "./TrainCard.Time"
 
 export type TTrainCard = {
@@ -101,11 +103,20 @@ export const TrainCard = ({ arrival, departure, isDisabled }: TTrainCard) => {
             </ul>
           )}
 
-          <AdditionalInformation
-            operationalTrainNumber={departure.OperationalTrainNumber ?? ""}
-            scheduledDepartureDateTime={departure.ScheduledDepartureDateTime ?? ""}
-            isCommuterTrain={isPendelTag}
-          />
+          <div className="flex flex-col relative space-y-4 border-t border-t-slate-900/10 dark:border-t-slate-700 pt-4">
+            <ErrorBoundary
+              operationalTrainNumber={departure.OperationalTrainNumber ?? ""}
+              scheduledDepartureDateTime={departure.ScheduledDepartureDateTime ?? ""}
+            >
+              <Suspense fallback={<Loading />}>
+                <AdditionalInformation
+                  operationalTrainNumber={departure.OperationalTrainNumber ?? ""}
+                  scheduledDepartureDateTime={departure.ScheduledDepartureDateTime ?? ""}
+                  isCommuterTrain={isPendelTag}
+                />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </div>
       )}
     </div>
