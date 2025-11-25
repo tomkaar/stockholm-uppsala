@@ -1,5 +1,3 @@
-"use client"
-
 import { RefreshTrainsButton } from "./components/RefreshTrainsButton"
 import { SwitchDestinationButton } from "./components/SwitchDestinationButton"
 

@@ -1,13 +1,8 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
-import ErrorBoundary from "@/components/ErrorBoundary"
 import { TrainInformationRouteParams } from "@/types/TrainInformationRouteParams"
 
-import DistruptionMessagesError from "./@distruptionMessages/error"
-import DistruptionMessagesLoading from "./@distruptionMessages/loading"
-import TrainsError from "./@trains/error"
-import TrainsLoading from "./@trains/loading"
 import { Header } from "./components/Header"
 import { Navigation } from "./components/Navigation"
 
@@ -15,12 +10,13 @@ export interface ILayout {
   children: React.ReactNode
   distruptionMessages: React.ReactNode
   trains: React.ReactNode
-  params: TrainInformationRouteParams
+  params: Promise<TrainInformationRouteParams>
 }
 
 export default async function Layout({ children, distruptionMessages, trains, params }: ILayout) {
-  const isValidFromStation = ["Uppsala", "Stockholm"].includes(params.from)
-  const isValidToStation = ["Uppsala", "Stockholm"].includes(params.to)
+  const resolvedParams = await params
+  const isValidFromStation = ["Uppsala", "Stockholm"].includes(resolvedParams.from)
+  const isValidToStation = ["Uppsala", "Stockholm"].includes(resolvedParams.to)
 
   if (!isValidFromStation || !isValidToStation) {
     notFound()
@@ -28,17 +24,11 @@ export default async function Layout({ children, distruptionMessages, trains, pa
 
   return (
     <>
-      <Header from={params.from} to={params.to} />
+      <Header from={resolvedParams.from} to={resolvedParams.to} />
       <Navigation />
 
-      <ErrorBoundary fallback={<DistruptionMessagesError />}>
-        <Suspense fallback={<DistruptionMessagesLoading />}>{distruptionMessages}</Suspense>
-      </ErrorBoundary>
-
-      <ErrorBoundary fallback={<TrainsError />}>
-        <Suspense fallback={<TrainsLoading />}>{trains}</Suspense>
-      </ErrorBoundary>
-
+      {distruptionMessages}
+      {trains}
       {children}
     </>
   )

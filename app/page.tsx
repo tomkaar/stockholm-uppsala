@@ -1,8 +1,6 @@
-import dayjs from "dayjs"
 import { Metadata } from "next"
 
-import { Chevron } from "@/assets/icons/Chevron"
-import { LinkButton } from "@/components/LinkButton"
+import NavigateToTripButton from "@/components/NavigateToTripButton"
 
 export const metadata: Metadata = {
   title: "Stockholm - Uppsala med Movingo",
@@ -10,11 +8,7 @@ export const metadata: Metadata = {
   viewport: "width=device-width, initial-scale=1",
 }
 
-export const revalidate = 60
-
-async function Home() {
-  const today = await new Promise((resolve) => resolve(dayjs().format("YYYY-MM-DD")))
-
+export default function Home() {
   return (
     <main className="flex flex-row justify-center pt-12">
       <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-8">
@@ -24,26 +18,10 @@ async function Home() {
           <br /> Uppsala där Movingo gäller.
         </p>
 
-        <LinkButton prefetch={false} href={`/Stockholm/Uppsala/${today}`}>
-          <span className="font-semibold">Stockholm</span>
-          &nbsp;
-          <Chevron width={16} height={16} className="rotate-90" />
-          &nbsp;
-          <span className="font-semibold">Uppsala</span>
-        </LinkButton>
-
+        <NavigateToTripButton from="Stockholm" to="Uppsala" />
         <span className="block text-center text-sm text-slate-900 dark:text-slate-300 my-2">eller</span>
-
-        <LinkButton prefetch={false} href={`/Uppsala/Stockholm/${today}`}>
-          <span className="font-semibold">Uppsala</span>
-          &nbsp;
-          <Chevron width={16} height={16} className="rotate-90" />
-          &nbsp;
-          <span className="font-semibold">Stockholm</span>
-        </LinkButton>
+        <NavigateToTripButton from="Uppsala" to="Stockholm" />
       </div>
     </main>
   )
 }
-
-export default Home

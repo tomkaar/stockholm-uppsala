@@ -1,22 +1,18 @@
-import dayjs from "dayjs"
+import "server-only"
 
 import { TrainAnnouncement } from "@/types/TrainAnnouncement"
+import { formatDateForAPI, parseDate, setEndOfDay, setStartOfDay } from "@/utils/dateUtils"
 
 import { fetchFromTrafikverket } from "../fetchFromTrafikverket"
 import { getAdvertisedTrainIdentQuery, getPendeltagQuery } from "./query"
+import { cacheLife } from "next/cache"
 
 export const getCommuterTrains = async (fromStation: string, toStation: string, selectedDay: string) => {
-  const dateFrom = dayjs(selectedDay ?? new Date())
-    .hour(0)
-    .minute(0)
-    .second(0)
-    .format("DD MMM YYYY HH:mm:ss")
+  "use cache"
+  cacheLife("seconds")
 
-  const dateTo = dayjs(selectedDay ?? new Date())
-    .set("hour", 23)
-    .set("minute", 59)
-    .set("second", 59)
-    .format("DD MMM YYYY HH:mm:ss")
+  const dateFrom = formatDateForAPI(setStartOfDay(parseDate(selectedDay)))
+  const dateTo = formatDateForAPI(setEndOfDay(parseDate(selectedDay ?? new Date())))
 
   const allPendeltag = await fetchFromTrafikverket(getAdvertisedTrainIdentQuery(toStation))
     .then((res) => res.json())

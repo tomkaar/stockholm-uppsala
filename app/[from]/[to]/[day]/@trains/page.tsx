@@ -10,19 +10,18 @@ import { PartialFetchError } from "./components/PartialFetchError"
 import { PreviousTrainsAnnouncements } from "./components/PreviousTrainsAnnouncements"
 import { TrainCard } from "./components/TrainCard/TrainCard"
 
-export const revalidate = 10
-
 interface ITrainsPage {
-  params: TrainInformationRouteParams
+  params: Promise<TrainInformationRouteParams>
 }
 
 export default async function Home({ params }: ITrainsPage) {
-  const fromStation = getStationName(params?.from)
-  const toStation = getStationName(params?.to)
+  const resolvedParams = await params
+  const fromStation = getStationName(resolvedParams?.from)
+  const toStation = getStationName(resolvedParams?.to)
 
   if (!fromStation || !toStation) return null
 
-  const selectedDay = params?.day ?? dayjs().format("YYYY-MM-DD")
+  const selectedDay = resolvedParams?.day ?? dayjs().format("YYYY-MM-DD")
 
   const [{ date, trains, error }, { trains: commuterTrains, error: commuterTrainsError }] = await Promise.all([
     getTrains(fromStation.tåg, toStation.tåg, selectedDay),
